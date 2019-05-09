@@ -1,0 +1,13 @@
+---
+title: "Expert Choice"
+author: "Jed Stephens"
+date: '`r format(Sys.Date(), "%d %B %Y")`'
+output: rmarkdown::github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit README.Rmd to make changes. -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse=TRUE, comment="##", fig.retina=2, fig.path = "README_figs/README-")
+```
+
