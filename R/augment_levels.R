@@ -25,7 +25,7 @@ augment_levels <- function(full_factorial){
   #https://stackoverflow.com/q/4752275/7837538
   B <- t(attributes(full_factorial)$X_full)[-1,]
   colnames(B) <- level_summary
-  # The theory is that B %*% t(B) should equal I. (Street et al, pg. 463)
+  # The theory is that B %*% t(B) should equal I. (Street et al., 2005, pg. 463)
   almostI <- tcrossprod(B, B)
   #return(almostI)
 

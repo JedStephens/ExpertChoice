@@ -1,12 +1,14 @@
 #' Fractional Factorial Design Efficiency
 #'
-#' @param formula A specification of the
-#' @param searched_fractional_factorial
+#' @param formula A specification, in formula form, of the desired effects sought to be estimated.
+#' @param searched_fractional_factorial a fractional factorial generated as the result of a `search_design`.
+#' @references Kuhfeld, W. F. Marketing Research Methods in SAS Experimental Design, Choice, Conjoint, and Graphical Techniques 2010.
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' See tutorial for worked examples.
 fractional_factorial_efficiency <- function(formula, searched_fractional_factorial){
   if(attributes(searched_fractional_factorial)$searched != TRUE){
     stop(simpleError("The input must be the result of a search from the full factorial"))
@@ -19,7 +21,7 @@ fractional_factorial_efficiency <- function(formula, searched_fractional_factori
   p   <- nrow(tXX)
   invtXX  <- solve(tXX)
   invdiag <- (diag(invtXX))
-  Lambda    <- eigen(invtXX, only.values = TRUE)$values
+  Lambda  <- eigen(invtXX, only.values = TRUE)$values
   # Therom: Let Q be an n × n matrix. The product of the n eigenvalues of Q is the same as the determinant of A.
   detLambda <- prod(Lambda)
 
@@ -33,7 +35,7 @@ fractional_factorial_efficiency <- function(formula, searched_fractional_factori
             "Your fractional factorial design has a D-efficiency of", D_eff, "\n")
       )
   # Function output.
-  list(X=X, cov_mat = round(tXX,3), inv_cov_mat= round(invtXX,3),
+  list(X=X, information_mat = round(tXX,3), inv_cov_mat= round(invtXX,3),
        lamda_mat = Lambda, inv_diag = invdiag, A_eff = A_eff, D_eff = D_eff )
 
 }
