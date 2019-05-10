@@ -4,10 +4,10 @@
 \alias{augment_levels}
 \title{Augment levels and B-matrix to Full Factorial Design.}
 \usage{
-augment_levels(full_factorial_design)
+augment_levels(full_factorial)
 }
 \arguments{
-\item{full_factorial_design}{}
+\item{full_factorial}{a `data.table` generated from the `full_factorial` function.}
 }
 \value{
 a `data.frame` with an additional column identifiying the level and the B-matrix attribute.
