@@ -4,7 +4,16 @@
 #' @param searched_fractional_factorial a fractional factorial generated as the result of a `search_design`.
 #' @references Kuhfeld, W. F. Marketing Research Methods in SAS Experimental Design, Choice, Conjoint, and Graphical Techniques 2010.
 #'
-#' @return
+#' @return a list with the following objects:
+#' 1. X - This is the formula expanded version of the fractional factorial which was passed to the function.
+#' 2. information_mat - This is the information matrix described by the associated note. Note: it is rounded to three decimal places to ease reading.
+#' 3. inv_information_mat - This is the inverse of the information matrix. Note: it is rounded to three decimal places to ease reading.
+#' 4. lamda_mat - This is the diagonal elements of the Lamda Matrix described by Kuhfeld (pg. 62). The elements are the eigen values of the inv_information_mat.
+#' 5. inv_diag - This is the diagonal elements of the inv_information_mat. (May be of use to some researchers...)
+#' 6. GWLP - This is the generalised world lengths for the searched design. (Note: this would not change depending on what is in the formula expansion.)
+#' 7. A_eff - This is the A-efficiency of the design given the particular formula expansion.
+#' 8. D_eff - This is the D-efficiency of the design given the particular formula expansion.
+#'
 #' @export
 #'
 #' @examples
@@ -20,6 +29,9 @@ fractional_factorial_efficiency <- function(formula, searched_fractional_factori
   tXX <- crossprod(X, X) # t(X) %*% X. (Thats the equivalent)
   p   <- nrow(tXX)
   invtXX  <- solve(tXX)
+  # I   <- matrix(0, nrow = nrow(tXX), ncol = ncol(tXX))
+  # diag(I) <- 1
+  # invtXX  <- solve(tXX, I)
   invdiag <- (diag(invtXX))
   Lambda  <- eigen(invtXX, only.values = TRUE)$values
   # Therom: Let Q be an n × n matrix. The product of the n eigenvalues of Q is the same as the determinant of A.
@@ -29,13 +41,15 @@ fractional_factorial_efficiency <- function(formula, searched_fractional_factori
   # Kuhfeld 2010, pg. 63
   A_eff  <- 1/(sum(Nd * invdiag / p)) * 100
   D_eff  <- 1/(detLambda^(1/p) * Nd)  * 100
+  # Also add the generalised word lengths for good measure.
+  gwlp   <- DoE.base::GWLP(searched_fractional_factorial)
 
   # Some user feedback.
   cat(paste("Your fractional factorial design has an A-efficiency of", A_eff,"\n",
             "Your fractional factorial design has a D-efficiency of", D_eff, "\n")
       )
   # Function output.
-  list(X=X, information_mat = round(tXX,3), inv_cov_mat= round(invtXX,3),
-       lamda_mat = Lambda, inv_diag = invdiag, A_eff = A_eff, D_eff = D_eff )
+  list(X=X, information_mat = round(tXX,3), inv_information_mat= round(invtXX,3),
+       lamda_mat = Lambda, inv_diag = invdiag, GWLP = gwlp, A_eff = A_eff, D_eff = D_eff )
 
 }

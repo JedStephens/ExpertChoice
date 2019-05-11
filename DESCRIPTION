@@ -1,5 +1,5 @@
 Package: ExpertChoice
-Title: Supports Discrete Choice and Conjoint analysis on Expert Surveys
+Title: Supporting the Design of Discrete Choice and Conjoint Analysis for Expert Surveys
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Jed",
@@ -7,12 +7,13 @@ Authors@R:
            role = c("aut", "cre"),
            email = "STPJED001@myuct.ac.za",
            comment = c(ORCID = "0000-0002-0131-703X"))
-Description: An R package to support discrete choice and conjoint analysis on expert surveys. (i.e. designs without blocking). Designs can be formed on the basis of orthogonal arrays or search methods for optimal designs (Federov). Various methods for converting the design into a discrete choice experiment. Many efficiency measures!
+Description: An R package to support the design of discrete choice and conjoint analysis especially on expert surveys. (i.e. designs without blocking). Designs can be formed on the basis of orthogonal arrays or search methods for optimal designs (Federov). Various methods for converting the design into a discrete choice experiment. Many efficiency measures!
 ByteCompile: true
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
     far,
-    dplyr
+    dplyr,
+    DoE.base
 RoxygenNote: 6.1.1

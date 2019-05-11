@@ -11,6 +11,17 @@ fractional_factorial_efficiency(formula, searched_fractional_factorial)
 
 \item{searched_fractional_factorial}{a fractional factorial generated as the result of a `search_design`.}
 }
+\value{
+a list with the following objects:
+1. X - This is the formula expanded version of the fractional factorial which was passed to the function.
+2. information_mat - This is the information matrix described by the associated note. Note: it is rounded to three decimal places to ease reading.
+3. inv_information_mat - This is the inverse of the information matrix. Note: it is rounded to three decimal places to ease reading.
+4. lamda_mat - This is the diagonal elements of the Lamda Matrix described by Kuhfeld (pg. 62). The elements are the eigen values of the inv_information_mat.
+5. inv_diag - This is the diagonal elements of the inv_information_mat. (May be of use to some researchers...)
+6. GWLP - This is the generalised world lengths for the searched design. (Note: this would not change depending on what is in the formula expansion.)
+7. A_eff - This is the A-efficiency of the design given the particular formula expansion.
+8. D_eff - This is the D-efficiency of the design given the particular formula expansion.
+}
 \description{
 Fractional Factorial Design Efficiency
 }
