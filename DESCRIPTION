@@ -15,5 +15,6 @@ LazyData: true
 Imports: 
     far,
     dplyr,
-    DoE.base
+    DoE.base,
+    rlist
 RoxygenNote: 6.1.1
