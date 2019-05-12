@@ -1,7 +1,7 @@
 Expert Choice
 ================
 Jed Stephens
-11 May 2019
+12 May 2019
 
 <!-- README.md is generated from README.Rmd. Please edit README.Rmd to make changes. -->
 
@@ -153,16 +153,16 @@ the `levels` column.
 ``` r
 aff4521[sample(nrow(aff4521), 10), ]
 ##      maker technical category_rarity size age provenance levels
-## 1962     2         3               3    3   4          2 233342
-## 278      2         2               2    1   2          1 222121
-## 558      2         4               3    1   3          1 243131
-## 629      1         2               4    2   3          1 124231
-## 500      4         1               4    4   2          1 414421
-## 433      1         1               4    3   2          1 114321
-## 655      3         4               1    3   3          1 341331
-## 1207     3         2               4    3   1          2 324312
-## 249      1         3               4    4   1          1 134411
-## 1823     3         4               2    1   4          2 342142
+## 1266     2         1               4    4   1          2 214412
+## 705      1         1               1    4   3          1 111431
+## 1481     1         3               1    4   2          2 131422
+## 1605     1         2               1    2   3          2 121232
+## 605      1         4               2    2   3          1 142231
+## 1228     4         3               1    4   1          2 431412
+## 888      4         2               4    2   4          1 424241
+## 1512     4         2               3    4   2          2 423422
+## 1520     4         4               3    4   2          2 443422
+## 614      2         2               3    2   3          1 223231
 ```
 
 # Step 3: Creating a fractional factorial design.
@@ -170,26 +170,7 @@ aff4521[sample(nrow(aff4521), 10), ]
 ``` r
 library(AlgDesign)
 library(DoE.base)
-## Loading required package: grid
-## Loading required package: conf.design
-## Registered S3 method overwritten by 'DoE.base':
-##   method           from       
-##   factorize.factor conf.design
-## 
-## Attaching package: 'DoE.base'
-## The following objects are masked from 'package:stats':
-## 
-##     aov, lm
-## The following object is masked from 'package:graphics':
-## 
-##     plot.design
-## The following object is masked from 'package:base':
-## 
-##     lengths
 library(DoE.MIParray)
-## Registered S3 method overwritten by 'DoE.MIParray':
-##   method   from    
-##   print.oa DoE.base
 ```
 
 There are many ways to create a fractional factorial design. See Section
@@ -202,6 +183,8 @@ a fractional factorial design using an orthogonal array with either the
 factorial designs from the `AlgDesign` package.
 
 ## Ortogonal Arrays (`DoE.MIParray` or `DoE.base`)
+
+### Determine feasiability
 
 The function `oa_feasible()` from the `DoE.base` package
 (`DoE.base::oa_feasible()`) provides many methods for determining if a
@@ -251,6 +234,20 @@ head(silver_4521_64, 10)
 ## [10,]    1    3    2    3    4    1
 ```
 
+## D-efficient
+
+Not yet discussed or though it should be achieveable with mininal
+effort. If a reader wishes for this example to be completed before I
+have done so please open a GitHub issue and I shall happily oblige
+completing.
+
+# Step 4: Searching the full factorial for the chosen fractional factorial design
+
+The ability to use multiple different packages to construct the
+fractional factorial design is ensured by this step. There can exist
+small differences between the different methods which require some
+fiddiling.
+
 The results of the `mosek_MIParray` function are orthogonal arrays
 without colnames. Hence in this instance the colnames need to be added.
 This design clearly needed to be made with the full factiorial in mind.
@@ -277,7 +274,7 @@ attributes(fractional_f4521_64)$searched
 
 Once an object is search converted it is now easy to run diagonsitcs.
 
-# Step Five
+# Step 5: Determining the efficacy of (full or fractional) factorial designs
 
 The theoertical discussion of these diagonstics is presented extensively
 in the associated note Designing conjoint scaling and discrete choice
@@ -309,22 +306,111 @@ note.
 ``` r
 # Test for main effects
 main_effects <- fractional_factorial_efficiency(~ maker + technical + category_rarity + size + age + provenance, fractional_f4521_64)
-## Your fractional factorial design has an A-efficiency of 100 
-##  Your fractional factorial design has a D-efficiency of 100
+## Your fractional factorial design has an A-efficiency of 100 %
+##  Your fractional factorial design has a D-efficiency of 100 %
 ```
 
-### Determine feasiability
+The resultant object has the following objects:
 
-## D-efficient
+``` r
+names(main_effects)
+## [1] "X"                   "information_mat"     "inv_information_mat"
+## [4] "lamda_mat"           "inv_diag"            "GWLP"               
+## [7] "A_eff"               "D_eff"
+```
 
-Not yet discussed or though it should be achieveable with mininal
-effort. If a reader wishes for this example to be completed before I
-have done so please open a GitHub issue and I shall happily oblige
-completing.
+Check the package help file for the `fractional_factorial_efficiency()`
+function for a full description. Also see the associated note for a more
+technical description.
 
-# Step 4: Searching the full factorial for the chosen fractional factorial design
+``` r
+# Test for main effects and interactions described in note.
+main_plus_interacts <- fractional_factorial_efficiency(~ maker * technical + category_rarity + size + age * provenance, fractional_f4521_64)
+## Your fractional factorial design has an A-efficiency of 0 %
+##  Your fractional factorial design has a D-efficiency of NaN %
+```
 
-The ability to use multiple different packages to construct the
-fractional factorial design is ensured by this step. There can exist
-small differences between the different methods which require some
-fiddiling.
+This design supports only a single set of two-attribute interactions
+i.e. maker interact technical, or size interact age or age interact
+provenance etc. However it does not support more than two sets of
+two-attribute interactions: i.e. in this instance the maker interact
+technical and age interact provenance.
+
+In instances where some of the stipulated effects cannot be estimated
+(such as above) then the D-efficiecy would be NaN and similarly the
+A-efficeny is zero.
+
+# Step 6: Methods to convert from factorial designs to discrete choice experiments
+
+## JS Method
+
+This method is the one proposed in the document Designing conjoint
+scaling and discrete choice experiments for small sample expert surveys
+by Jed Stephens.
+
+``` r
+dce_step <- stephens_pairing(fractional_f4521_64)
+```
+
+# Step 7: Efficacy of the Discrete Choice Design
+
+``` r
+dce_step_efficacy <- dce_effiency(aff4521, dce_step$choice_sets, m = 2)
+## q is 1 
+## [1] "L is 4"
+## [1] "Case 4"
+## [1] "s is 1"
+## q is 2 
+## [1] "L is 4"
+## [1] "Case 4"
+## [1] "s is 1"
+## q is 3 
+## [1] "L is 4"
+## [1] "Case 4"
+## [1] "s is 1"
+## q is 4 
+## [1] "L is 4"
+## [1] "Case 4"
+## [1] "s is 1"
+## q is 5 
+## [1] "L is 4"
+## [1] "Case 4"
+## [1] "s is 1"
+## q is 6 
+## [1] "L is 2"
+## [1] "Case 2"
+## [1] "s is 1"
+## The D-efficiency of this discrete choice experiment is 0.538 %
+```
+
+# Step 8: Construct a Discrete Choice Question Frame
+
+The function `construct_question_frame` is helpful with the final
+stages. It consistently converts a `choice_set` arrangement into a
+`data.frame`.
+
+``` r
+question_table_f4521 <- construct_question_frame(aff4521, dce_step$choice_sets, m = 2)
+```
+
+It is now time to add some useful information back to the levels.
+Originally these were described in Step 0, but up until this point it
+has been nececasury to work with only integer values. (Also just imagine
+if you had worked with these very long names up until this point…)
+
+``` r
+levels(question_table_f4521$maker) <- c("little known", "known to specialists", "recognised", "famous")
+levels(question_table_f4521$technical) <- c("below average", "good", "meritorious", "exceptional")
+levels(question_table_f4521$category_rarity) <- c("common", "uncommon", "rare", "very rare")
+levels(question_table_f4521$size) <- c("small: under 150g", "medium: between 151g and 400g", "large: between 401g and 1000g", "extra large: larger than 1000g")
+levels(question_table_f4521$age) <- c("21st or 20th Century", "19th Century", "18th Century", "Before 18th Century")
+levels(question_table_f4521$provenance) <- c("unavailable or available, but unimportant", "available & important")
+View(question_table_f4521)
+```
+
+# Replicating the example in Street
+
+``` r
+atttravel  = list(airfaire = c("0", "1"),
+                  travel_time =c("0", "1", "2"))
+```

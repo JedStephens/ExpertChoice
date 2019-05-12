@@ -235,5 +235,100 @@ main_plus_interacts <- fractional_factorial_efficiency(~ maker * technical + cat
 This design supports only a single set of two-attribute interactions i.e. maker interact technical, or size interact age or age interact provenance etc. 
 However it does not support more than two sets of two-attribute interactions: i.e. in this instance the maker interact technical and age interact provenance.
 
-In instances where the effects cannot be estimated (such as above) then the D-efficiecy would be NaN and similarly the A-efficeny is zero.
+In instances where some of the stipulated effects cannot be estimated (such as above) then the D-efficiecy would be NaN and similarly the A-efficeny is zero.
+
+# Step 6: Methods to convert from factorial designs to discrete choice experiments
+
+## JS Method
+This method is the one proposed in the document Designing conjoint scaling and discrete choice experiments for small sample expert surveys by Jed Stephens.
+
+```{r}
+dce_step <- stephens_pairing(fractional_f4521_64)
+```
+
+
+# Step 7: Efficacy of the Discrete Choice Design
+
+```{r}
+dce_step_efficacy <- dce_effiency(aff4521, dce_step$choice_sets, m = 2)
+```
+
+
+# Step 8: Construct a Discrete Choice Question Frame
+
+The function `construct_question_frame` is helpful with the final stages.
+It consistently converts a `choice_set` arrangement into a `data.frame`.
+
+```{r}
+question_table_f4521 <- construct_question_frame(aff4521, dce_step$choice_sets, m = 2)
+```
+
+It is now time to add some useful information back to the levels.
+Originally these were described in Step 0, but up until this point it has been nececasury to work with only integer values.
+(Also just imagine if you had worked with these very long names up until this point...)
+
+```{r}
+levels(question_table_f4521$maker) <- c("little known", "known to specialists", "recognised", "famous")
+levels(question_table_f4521$technical) <- c("below average", "good", "meritorious", "exceptional")
+levels(question_table_f4521$category_rarity) <- c("common", "uncommon", "rare", "very rare")
+levels(question_table_f4521$size) <- c("small: under 150g", "medium: between 151g and 400g", "large: between 401g and 1000g", "extra large: larger than 1000g")
+levels(question_table_f4521$age) <- c("21st or 20th Century", "19th Century", "18th Century", "Before 18th Century")
+levels(question_table_f4521$provenance) <- c("unavailable or available, but unimportant", "available & important")
+View(question_table_f4521)
+```
+
+# Replicating the example in Street
+
+The purpose of this section is to replicate the ...
+The steps follow those of the tutorial.
+
+```{r}
+# Step 0
+atttravel  = list(airfaire = c("0", "1"),
+                  travel_time =c("0", "1", "2"))
+# Step 1
+travel2131     <- full_factorial(atttravel)
+# Step 2
+aff_travel2131 <- augment_levels(travel2131)
+# Step 3.
+# The full factorial is already so small that selecting a fraction of it would be silly.
+# Therefore re-use the full factorial as the fractional fractorial.
+
+# Step 4. 
+# Confirming that this is an efficient design.
+fractional_travel2131 <- search_design(travel2131, travel2131)
+
+# Step 5.
+# Confirm that this design supports all interactions.
+full_factorial_efficiacy <- fractional_factorial_efficiency(~ (airfaire + travel_time)^2, fractional_travel2131)
+
+# Step 6 & Step 7.
+# Street gives two examples of choice sets.
+travel_choice_set1 <- list(c("00", "11", "02"), c("10", "02", "12"))
+
+travel_example <- dce_effiency(aff_travel2131, travel_choice_set1, m = 3)
+#Note, if you want to rearrange the columns of the lamda matrix so that they are the same as Street use the following:
+# lamda_street_cols  <- matrix(c(travel_example$Lamda$mat[,1],
+#                                travel_example$Lamda$mat[,3],
+#                                travel_example$Lamda$mat[,5],
+#                                travel_example$Lamda$mat[,2],
+#                                travel_example$Lamda$mat[,4],
+#                                travel_example$Lamda$mat[,6]), ncol = 6)
+# lamda_street_paper <- matrix(c(lamda_street_cols[1,],
+#                                lamda_street_cols[3,],
+#                                lamda_street_cols[5,],
+#                                lamda_street_cols[2,],
+#                                lamda_street_cols[4,],
+#                                lamda_street_cols[6,]), ncol = 6)
+# Street gives a second arrangment:
+travel_choice_set2 <- list(c("00", "11", "02"), c("10", "01", "12"))
+# This version is 100% efficient.
+travel_example2 <- dce_effiency(aff_travel2131, travel_choice_set2, m = 3)
+
+# Step 8
+travel_questions <- construct_question_frame(aff_travel2131, travel_choice_set2, m = 3, randomise_choice_sets = FALSE)
+levels(travel_questions$airfaire) <- c("$350", "$650")
+levels(travel_questions$travel_time) <- c("4 hours", "5 hours", "6 hours")
+View(travel_questions)
+```
 
