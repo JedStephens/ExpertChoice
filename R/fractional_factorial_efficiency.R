@@ -28,10 +28,17 @@ fractional_factorial_efficiency <- function(formula, searched_fractional_factori
   X   <- model.matrix(formula, searched_fractional_factorial)
   tXX <- crossprod(X, X) # t(X) %*% X. (Thats the equivalent)
   p   <- nrow(tXX)
-  invtXX  <- solve(tXX)
-  # I   <- matrix(0, nrow = nrow(tXX), ncol = ncol(tXX))
-  # diag(I) <- 1
-  # invtXX  <- solve(tXX, I)
+
+  # Attempts at inversing tXX.
+  # First perform the QR decomposition on X.
+  # Then take only the R section of the QR decomposition
+  # Finally use the Inverse from QR/Choleski Decomposition.
+  # See: https://stat.ethz.ch/pipermail/r-help/2002-June/022561.html
+  # Also see ?chol2inv() and ?qr() and ?qr.R()
+
+  invtXX  <- chol2inv(qr.R(qr(X))) # This generates the equilvant of (X'X)^(-1).
+  #invtXX  <- solve(tXX)
+
   invdiag <- (diag(invtXX))
   Lambda  <- eigen(invtXX, only.values = TRUE)$values
   # Therom: Let Q be an n × n matrix. The product of the n eigenvalues of Q is the same as the determinant of A.
@@ -45,8 +52,8 @@ fractional_factorial_efficiency <- function(formula, searched_fractional_factori
   gwlp   <- DoE.base::GWLP(searched_fractional_factorial)
 
   # Some user feedback.
-  cat(paste("Your fractional factorial design has an A-efficiency of", A_eff,"\n",
-            "Your fractional factorial design has a D-efficiency of", D_eff, "\n")
+  cat(paste("Your fractional factorial design has an A-efficiency of", round(A_eff,3),"%\n",
+            "Your fractional factorial design has a D-efficiency of", round(D_eff,3), "%\n")
       )
   # Function output.
   list(X=X, information_mat = round(tXX,3), inv_information_mat= round(invtXX,3),
