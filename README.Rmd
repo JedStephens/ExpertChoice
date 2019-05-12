@@ -133,6 +133,8 @@ These are the construction of a fractional factorial design using an orthogonal 
 
 ## Ortogonal Arrays (`DoE.MIParray` or `DoE.base`)
 
+### Determine feasiability
+
 The function `oa_feasible()` from the `DoE.base` package (`DoE.base::oa_feasible()`) provides many methods for determining if a particular design can be construed with $N_D$ rows.
 For the silver expert it was found that the following design was feasiable.
 It is possible to specifiy higher resolution designs.
@@ -163,6 +165,15 @@ silver_4521_64 <- ExpertChoice::silver_4521_64
 head(silver_4521_64, 10)
 ```
 
+## D-efficient
+Not yet discussed or though it should be achieveable with mininal effort. 
+If a reader wishes for this example to be completed before I have done so please open a GitHub issue and I shall happily oblige completing.
+
+
+# Step 4: Searching the full factorial for the chosen fractional factorial design
+The ability to use multiple different packages to construct the fractional factorial design is ensured by this step.
+There can exist small differences between the different methods which require some fiddiling.
+
 The results of the `mosek_MIParray` function are orthogonal arrays without colnames.
 Hence in this instance the colnames need to be added. 
 This design clearly needed to be made with the full factiorial in mind.
@@ -185,7 +196,7 @@ attributes(fractional_f4521_64)$searched
 
 Once an object is search converted it is now easy to run diagonsitcs.
 
-# Step Five
+# Step 5: Determining the efficacy of (full or fractional) factorial designs
 
 The theoertical discussion of these diagonstics is presented extensively in the associated note Designing conjoint scaling and discrete choice experiments for small sample expert surveys by Jed Stephens. See Section...
 
@@ -218,20 +229,11 @@ Also see the associated note for a more technical description.
 
 ```{r}
 # Test for main effects and interactions described in note.
-main_plus_interacts <- fractional_factorial_efficiency(~ maker*technical + category_rarity + size + age * provenance, fractional_f4521_64)
+main_plus_interacts <- fractional_factorial_efficiency(~ maker * technical + category_rarity + size + age * provenance, fractional_f4521_64)
 ```
 
+This design supports only a single set of two-attribute interactions i.e. maker interact technical, or size interact age or age interact provenance etc. 
+However it does not support more than two sets of two-attribute interactions: i.e. in this instance the maker interact technical and age interact provenance.
 
-### Determine feasiability
-
-
-## D-efficient
-Not yet discussed or though it should be achieveable with mininal effort. 
-If a reader wishes for this example to be completed before I have done so please open a GitHub issue and I shall happily oblige completing.
-
-# Step 4: Searching the full factorial for the chosen fractional factorial design
-The ability to use multiple different packages to construct the fractional factorial design is ensured by this step.
-There can exist small differences between the different methods which require some fiddiling.
-
-
+In instances where the effects cannot be estimated (such as above) then the D-efficiecy would be NaN and similarly the A-efficeny is zero.
 
