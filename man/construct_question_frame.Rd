@@ -2,12 +2,14 @@
 % Please edit documentation in R/construct_question_frame.R
 \name{construct_question_frame}
 \alias{construct_question_frame}
-\title{Convert from choice_sets to a question dataframe}
+\title{Convert from choice_sets to a question dataugmented_full_factorialrame}
 \usage{
-construct_question_frame(choice_sets, af, m,
+construct_question_frame(augmented_full_factorial, choice_sets, m,
   randomise_choice_sets = TRUE)
 }
 \arguments{
+\item{augmented_full_factorial}{The augmented full factorial object.}
+
 \item{choice_sets}{The choice sets list generated from one of the methods. (See Step 6 of the tutorial)}
 
 \item{m}{The number of alternatives in each choice set}
@@ -18,7 +20,7 @@ construct_question_frame(choice_sets, af, m,
 a data.frame object
 }
 \description{
-Convert from choice_sets to a question dataframe
+Convert from choice_sets to a question dataugmented_full_factorialrame
 }
 \examples{
 See Step 8 of tutorial
