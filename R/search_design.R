@@ -30,5 +30,5 @@ search_design <- function(full_factorial, fractional_factorial_design){
 
   # Add check key
   attr(out, "searched") <- TRUE
-  return(out)
+  return(dplyr::as_tibble(out))
 }

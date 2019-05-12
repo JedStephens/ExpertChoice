@@ -40,10 +40,12 @@ stephens_pairing <- function(fractional_factorial){
  # Importantly, the partial factoiral design still has the rownames of its design row.
  # These need to be superceeded witht he the row numbers that relate to the P1 and P2 outputs.
  # That can be done by surplanting the row.names.
- row.names(fractional_factorial) <- c(1:nrow(fractional_factorial))
+ # All depreciated since moving to tiblle...
+ #row.names(fractional_factorial) <- c(1:nrow(fractional_factorial))
  #Break into the two groups.
  fractional_factorial[optimised$pp1,]
  fractional_factorial[optimised$pp2,]
+ View(fractional_factorial[optimised$pp1,])
 
  # What these are are "column groups". The ROWS of each column group corrospond with one another.
  # We want then convernt these column groups into ROW groups i.e. the CHOICE SETS.

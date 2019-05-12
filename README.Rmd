@@ -123,7 +123,7 @@ aff4521[sample(nrow(aff4521), 10), ]
 ```{r load-packages, message=FALSE}
 library(AlgDesign)
 library(DoE.base)
-library(DoE.MIParray)
+#library(DoE.MIParray)
 ```
 
 There are many ways to create a fractional factorial design. 
@@ -243,14 +243,17 @@ In instances where some of the stipulated effects cannot be estimated (such as a
 This method is the one proposed in the document Designing conjoint scaling and discrete choice experiments for small sample expert surveys by Jed Stephens.
 
 ```{r}
-dce_step <- stephens_pairing(fractional_f4521_64)
+#dce_step <- stephens_pairing(fractional_f4521_64)
+dce_modulo <- modulo_method(fractional_f4521_64, 
+                            list(c(1,2,-1,2,1,1), c(-1,-2,+1,0,3,0), c(-0,-0,+1,0,+2,0)))
 ```
 
 
 # Step 7: Efficacy of the Discrete Choice Design
 
 ```{r}
-dce_step_efficacy <- dce_effiency(aff4521, dce_step$choice_sets, m = 2)
+#dce_step_efficacy <- dce_effiency(aff4521, dce_step$choice_sets, m = 2)
+dce_modulo_efficacy <- dce_effiency(aff4521, dce_modulo, m = 4)
 ```
 
 
