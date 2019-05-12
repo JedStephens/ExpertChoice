@@ -245,7 +245,7 @@ This method is the one proposed in the document Designing conjoint scaling and d
 ```{r}
 #dce_step <- stephens_pairing(fractional_f4521_64)
 dce_modulo <- modulo_method(fractional_f4521_64, 
-                            list(c(1,2,-1,2,1,1), c(-1,-2,+1,0,3,0), c(-0,-0,+1,0,+2,0)))
+                            list(c(1,1,1,1,1,1), c(3,3,3,3,3,0)))
 ```
 
 
@@ -253,7 +253,7 @@ dce_modulo <- modulo_method(fractional_f4521_64,
 
 ```{r}
 #dce_step_efficacy <- dce_effiency(aff4521, dce_step$choice_sets, m = 2)
-dce_modulo_efficacy <- dce_effiency(aff4521, dce_modulo, m = 4)
+dce_modulo_efficacy <- dce_effiency(aff4521, dce_modulo, m = 3)
 ```
 
 
@@ -263,7 +263,8 @@ The function `construct_question_frame` is helpful with the final stages.
 It consistently converts a `choice_set` arrangement into a `data.frame`.
 
 ```{r}
-question_table_f4521 <- construct_question_frame(aff4521, dce_step$choice_sets, m = 2)
+#question_table_f4521 <- construct_question_frame(aff4521, dce_step$choice_sets, m = 2)
+question_table_f4521 <- construct_question_frame(aff4521, dce_modulo_efficacy, m = 3)
 ```
 
 It is now time to add some useful information back to the levels.
