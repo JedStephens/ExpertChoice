@@ -7,6 +7,7 @@
 #' @export
 #'
 #' @examples
+#' See step 6 of tutorial.
 modulo_method <- function(fractional_fatorial, generators){
  # This is an implementation of the method described by Street et. al.
   attributes_list <- attributes(fractional_fatorial)$attributes_list

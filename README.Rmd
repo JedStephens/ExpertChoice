@@ -264,7 +264,7 @@ It consistently converts a `choice_set` arrangement into a `data.frame`.
 
 ```{r}
 #question_table_f4521 <- construct_question_frame(aff4521, dce_step$choice_sets, m = 2)
-question_table_f4521 <- construct_question_frame(aff4521, dce_modulo_efficacy, m = 3)
+question_table_f4521 <- construct_question_frame(aff4521, dce_modulo, m = 3)
 ```
 
 It is now time to add some useful information back to the levels.
