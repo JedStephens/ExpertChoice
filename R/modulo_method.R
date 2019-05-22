@@ -33,7 +33,9 @@ modulo_method <- function(fractional_fatorial, generators){
     choice_sets[[g + 1]] <- apply(adjusted_fractional_fatorial, 1, paste0, collapse = "")
   }
   # Create a matrix by binding together list elements.
+
   choice_sets_bound <- rlist::list.cbind(choice_sets)
+  #return(choice_sets_bound)
 
   # Convert into choice sets list.
   choice_sets <- vector("list", length = nrow(fractional_fatorial))
