@@ -16,5 +16,10 @@ Imports:
     far,
     dplyr,
     DoE.base,
-    rlist
-RoxygenNote: 6.1.1
+    rlist,
+    purrr
+RoxygenNote: 7.0.0
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

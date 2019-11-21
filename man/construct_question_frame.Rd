@@ -4,8 +4,12 @@
 \alias{construct_question_frame}
 \title{Convert from choice_sets to a question dataugmented_full_factorialrame}
 \usage{
-construct_question_frame(augmented_full_factorial, choice_sets, m,
-  randomise_choice_sets = TRUE)
+construct_question_frame(
+  augmented_full_factorial,
+  choice_sets,
+  m,
+  randomise_choice_sets = TRUE
+)
 }
 \arguments{
 \item{augmented_full_factorial}{The augmented full factorial object.}

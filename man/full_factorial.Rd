@@ -23,5 +23,6 @@ full_factorial(attrshort)
 }
 \references{
 Kuhfeld, W. F. Marketing Research Methods in SAS Experimental Design, Choice, Conjoint, and Graphical Techniques 2010.
+
 Jörg Suckut (https://stats.stackexchange.com/users/237455/j%c3%b6rg-suckut), How to calculate (standardized) orthogonal contrast coding in R?, URL (version: 2019-02-12): https://stats.stackexchange.com/q/392173
 }

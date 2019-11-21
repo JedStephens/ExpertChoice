@@ -8,33 +8,34 @@
 #' @export
 #'
 #' @examples
-#' See tutorial step 7
-dce_effiency <- function(augmented_full_factorial, choice_sets, m){
-  p <- ncol(attributes(augmented_full_factorial)$X_full)-1
+#' See tutorial step 8
+dce_effiency <- function(augmented_full_factorial, choice_sets) {
+  m <- unique(unlist(purrr::map(choice_sets, function(x){length(x)})))
+  p <- ncol(attributes(augmented_full_factorial)$X_full) - 1
   Lamda <- .Lambda_matrix(augmented_full_factorial, choice_sets, m)
   C_mat <- .C_matrix(Lamda, augmented_full_factorial)
   # Determine the theoretical upper bound for main effects using the multinomial regression (See Street.)
   upper_bound_detC <- .detC_optimal(attributes(augmented_full_factorial)$out.attrs$dim, m)
   # Then determine the desings D-optimality.
-  dce_d_effiency   <- .dce_d_effiency(C_mat, upper_bound_detC, p)
+  dce_d_effiency <- .dce_d_effiency(C_mat, upper_bound_detC, p)
   # Give some user output.
-  cat(paste("The D-efficiency of this discrete choice experiment is", round(dce_d_effiency, 3), "%", "\n"))
+  cat("The D-efficiency of this discrete choice experiment is", round(dce_d_effiency, 3), "%", "\n")
 
   # Return the useful output.
   return(list(dce_d_effiency = dce_d_effiency, upper_bound_detC = upper_bound_detC, C_matrix = C_mat, Lamda = Lamda))
 }
 
-# STEP SEVEN.
+
 # Diagnositics about the DCE design.
 
-.Lambda_matrix <- function(augmented_factorial, set_list, m){
+.Lambda_matrix <- function(augmented_factorial, set_list, m) {
   # Street et al., 2005, pg. 462
   profiles <- augmented_factorial$levels
   lamda <- base::matrix(data = integer(), nrow = length(profiles), ncol = length(profiles))
   colnames(lamda) <- profiles
   rownames(lamda) <- profiles
 
-  check_profiles <- function(x, p){
+  check_profiles <- function(x, p) {
     pair1 <- profiles %in% x
     pair2 <- pair1[p]
     pair_present <- pair1 * pair2
@@ -42,60 +43,60 @@ dce_effiency <- function(augmented_full_factorial, choice_sets, m){
   }
   for (r in 1:nrow(lamda)) {
     set_presence <- lapply(set_list, check_profiles, p = r)
-    #return(set_presence)
-    lamda_row_presence <- colSums(matrix(unlist(set_presence), byrow = TRUE,
-                                         nrow = length(set_list), ncol = length(profiles)))
-    #return(lamda_row_presence)
-    lamda[r,] <- lamda_row_presence
+    # return(set_presence)
+    lamda_row_presence <- colSums(matrix(unlist(set_presence),
+      byrow = TRUE,
+      nrow = length(set_list), ncol = length(profiles)
+    ))
+    # return(lamda_row_presence)
+    lamda[r, ] <- lamda_row_presence
   }
   diag(lamda) <- 0
   lamda <- -lamda
   diag(lamda) <- -rowSums(lamda)
 
-  return(list(mat = lamda, prefactor = 1/((m^2)*(length(set_list)))))
+  return(list(mat = lamda, prefactor = 1 / ((m^2) * (length(set_list)))))
 }
 
-.C_matrix <- function(lamda_mat, augmented_factorial){
-  #attributes(augmented_factorial)$B_mat %*% (lamda_mat$prefactor * lamda_mat$mat) %*% t(attributes(augmented_factorial)$B_mat)
+.C_matrix <- function(lamda_mat, augmented_factorial) {
+  # attributes(augmented_factorial)$B_mat %*% (lamda_mat$prefactor * lamda_mat$mat) %*% t(attributes(augmented_factorial)$B_mat)
   tcrossprod(attributes(augmented_factorial)$B_mat %*% (lamda_mat$prefactor * lamda_mat$mat), attributes(augmented_factorial)$B_mat)
 }
 
 # Helper function.
-.is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
+.is.wholenumber <- function(x, tol = .Machine$double.eps^0.5) abs(x - round(x)) < tol
 
 
-.detC_optimal <- function(levels_vector, m){
+.detC_optimal <- function(levels_vector, m) {
   # <- attributes(augmented_full_factorial)$out.attrs$dim
   k <- length(levels_vector)
   # A function.
-  determine_s <- function(q,m,l){
-    #return
-    if((((l == 2) & (m %% 2 != 0)))){
-      #CASE 1
+  determine_s <- function(q, m, l) {
+    # return
+    if ((((l == 2) & (m %% 2 != 0)))) {
+      # CASE 1
       print("Case 1")
-      return((m^2 -1)/4)
-
-    }else if(((l == 2) & (m %% 2 == 0))){
-      #CASE 2
+      return((m^2 - 1) / 4)
+    } else if (((l == 2) & (m %% 2 == 0))) {
+      # CASE 2
       print("Case 2")
       return((m^2) / 4)
-
-    }else if(((l > 2) & (l <= m))){
-      #CASE 3
+    } else if (((l > 2) & (l <= m))) {
+      # CASE 3
       print("Case 3")
       # First determine y and then x.
-      for (y in 0:(l-1)) {
-        x <- (m - y)/l # See page 463 of Street, Burgess, Louviere.
+      for (y in 0:(l - 1)) {
+        x <- (m - y) / l # See page 463 of Street, Burgess, Louviere.
         # If x is a whole number then we have a winner!
-        if(.is.wholenumber(x)){
+        if (.is.wholenumber(x)) {
           print(paste("The implied x is", x, "and y is", y))
-          return((m^2 - (l*x^2 + 2*x*y + y))/2)
+          return((m^2 - (l * x^2 + 2 * x * y + y)) / 2)
         }
       }
-    }else if((l >= m)){
+    } else if ((l >= m)) {
       # Case 4
       print("Case 4")
-      return((m*(m-1))/2)
+      return((m * (m - 1)) / 2)
     }
   }
 
@@ -108,17 +109,17 @@ dce_effiency <- function(augmented_full_factorial, choice_sets, m){
     print(paste("s is", s))
 
     notQ <- (1:k)[-q]
-    bracket <- (2*s) / (m^2 * (l - 1) * prod(levels_vector[notQ]))
-    detC_theroy <- detC_theroy*((bracket)^(l-1))
+    bracket <- (2 * s) / (m^2 * (l - 1) * prod(levels_vector[notQ]))
+    detC_theroy <- detC_theroy * ((bracket)^(l - 1))
   }
   names(detC_theroy) <- "upper_bound_detC"
   return(detC_theroy)
 }
 
 
-.dce_d_effiency <- function(C, C_optimal, p){
-  #cat(paste("p is", p))
-  dced <- ((det(C))/C_optimal)^(1/p) * 100
+.dce_d_effiency <- function(C, C_optimal, p) {
+  # cat(paste("p is", p))
+  dced <- ((det(C)) / C_optimal)^(1 / p) * 100
   names(dced) <- "dce_d_effiency"
   return(dced)
 }

@@ -52,8 +52,8 @@ fractional_factorial_efficiency <- function(formula, searched_fractional_factori
   gwlp   <- DoE.base::GWLP(searched_fractional_factorial)
 
   # Some user feedback.
-  cat(paste("Your fractional factorial design has an A-efficiency of", round(A_eff,3),"%\n",
-            "Your fractional factorial design has a D-efficiency of", round(D_eff,3), "%\n")
+  cat("Your fractional factorial design has an A-efficiency of", round(A_eff,3),"%\n",
+      "Your fractional factorial design has a D-efficiency of", round(D_eff,3), "%\n"
       )
   # Function output.
   list(X=X, information_mat = round(tXX,3), inv_information_mat= round(invtXX,3),

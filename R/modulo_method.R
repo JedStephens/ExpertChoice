@@ -42,6 +42,9 @@ modulo_method <- function(fractional_fatorial, generators){
   for (s in 1:length(choice_sets)) {
     choice_sets[[s]] <- choice_sets_bound[s,]
   }
+  class(choice_sets) <- c(class(choice_sets), "choice_sets")
+  m <- unique(unlist(purrr::map(choice_sets, function(x){length(x)})))
+  attr(choice_sets, "m") <- m
   return(choice_sets)
 }
 

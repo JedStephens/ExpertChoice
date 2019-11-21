@@ -10,7 +10,8 @@
 #'
 #' @examples
 #' See Step 8 of tutorial
-construct_question_frame <- function(augmented_full_factorial, choice_sets, m, randomise_choice_sets = TRUE){
+construct_question_frame <- function(augmented_full_factorial, choice_sets, randomise_choice_sets = TRUE){
+  m <- unique(unlist(purrr::map(choice_sets, function(x){length(x)})))
   number_of_questions <- length(choice_sets)
   if(randomise_choice_sets){
     choice_sets <- rlist::list.sample(choice_sets, number_of_questions)

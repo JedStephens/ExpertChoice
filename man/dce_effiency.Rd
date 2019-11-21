@@ -20,5 +20,5 @@ a list of named output.
 Efficacy Measures for Discrete Choice Experiments
 }
 \examples{
-See tutorial step 7
+See tutorial step 8
 }

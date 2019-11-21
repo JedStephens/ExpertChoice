@@ -11,22 +11,31 @@
 #' @examples
 #' # The use of this function depends on what the input to the argument fractional_factorial_design will be.
 #' # See Step 4 of the tutorial (on the GitHub repo) for more detials
-search_design <- function(full_factorial, fractional_factorial_design){
+search_design <- function(full_factorial, fractional_factorial_design) {
+  if (any(c("oa", "design") %in% class(fractional_factorial_design))) {
+    # The objects of class oa and design use 1 to mark the base level. Subtracing 1 places all factors at base of zero.
+    # The input needs to be coerced into another form...
+    fractional_factorial_design <- dplyr::mutate_all(dplyr::as_tibble(fractional_factorial_design), as.integer) - (1 - attr(full_factorial, "factor_base_level"))
+    #return(fractional_factorial_design)
+  }
   # The reason that the arugments are coerced into a tibble is to remove attributes of the input types which muck with this function.
-  whole_index  <- duplicated(rbind( dplyr::as_tibble(fractional_factorial_design)
-                                   ,dplyr::as_tibble(full_factorial)))
-  #return(whole_index)
-  #Start by keeping all
+  whole_index <- duplicated(rbind(
+    dplyr::as_tibble(fractional_factorial_design),
+    dplyr::as_tibble(full_factorial)
+  ))
+  # return(whole_index)
+  # Start by keeping all
   keeping_index <- rep(TRUE, length(whole_index))
-  #Then remove the rows that came in the factorial design.
+  # Then remove the rows that came in the factorial design.
   keeping_index[1:nrow(fractional_factorial_design)] <- FALSE
 
   row_index <- whole_index[keeping_index]
-  out <- full_factorial[row_index,]
+  out <- full_factorial[row_index, ]
 
   # Add X_main
   attr(out, "X_main") <- model.matrix(as.formula(
-    paste("", paste(attributes(out)$names, collapse=" + "), sep=" ~ ")), out)
+    paste("", paste(attributes(out)$names, collapse = " + "), sep = " ~ ")
+  ), out)
 
   # Add check key
   attr(out, "searched") <- TRUE
