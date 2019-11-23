@@ -25,7 +25,8 @@ full_factorial <- function(attributes_list){
   check_sequencing <- function(){
     pass <- TRUE
     for (l in 1:length(attributes_list)) {
-     pass <- pass & all(attributes_list[[l]] == base_level:{n_levels[[l]] - 1})
+      #print(base_level:{n_levels[[l]] - 1})
+     pass <- pass & all(attributes_list[[l]] == base_level:{n_levels[[l]] - ifelse(base_level == 0, 1, 0)})
     }
     return(pass)
   }

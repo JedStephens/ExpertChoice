@@ -366,3 +366,39 @@ levels(travel_questions$travel_time) <- c("4 hours", "5 hours", "6 hours")
 View(travel_questions)
 ```
 
+```{r}
+#Step 0
+# Described in Theory
+attri3261 <- list(
+    starter = c("1", "2", "3"),
+    main = c("1", "2", "3", "4", "5", "6"),
+    dessert = c("1", "2", "3")
+)
+# Step 1
+ff_menu <- full_factorial(attri3261)
+# Step 2
+aff_menu <- augment_levels(ff_menu)
+# Step 3
+nlevels <- unlist(purrr::map(ff_menu, function(x){length(levels(x))}))
+#oa_feasible(36, nlevels, strength = 3)
+
+#fractional_factorial_2241_25 <- oa.design(nlevels = nlevels, columns = "min34")
+fractional_factorial_3261_36 <- gurobi_MIParray(54, nlevels, resolution = 3)
+# Step 4
+# Confirming that this is an efficient design.
+colnames(fractional_factorial_3261_36) <- colnames(ff_menu)
+fractional_menu3261 <- search_design(ff_menu, fractional_factorial_3261_36)
+
+# Step 5.
+# Confirm that this design supports all interactions.
+full_factorial_efficiacy <- fractional_factorial_efficiency(~ (.)^2, fractional_menu3261)
+```
+
+
+# Design: DF: 17, 32 OA (Resolution II), 64 OA (Resolution III)
+oa_feasible(25, nlevels, strength = 2)
+```
+
+Using the `DoE.base` package it is possible to construct a 25 .
+```{r}
+```
