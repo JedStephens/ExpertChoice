@@ -7,7 +7,7 @@
 full_factorial(attributes_list)
 }
 \arguments{
-\item{attributes_list}{A named list: giving the variable name and the levels as characters. The levels should start from the base ("1") and go up in integer values.}
+\item{attributes_list}{A named list: giving the variable name and the levels as characters. The levels should start from the base of either "0" or "1" and go up in integer values.}
 }
 \value{
 a `data.frame` with the full factorial design and factors coded using standardised orthogonal contrast coding.

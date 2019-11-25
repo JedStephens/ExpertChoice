@@ -3,5 +3,5 @@
 %\VignetteIndexEntry{Theoretical introduction to ExpertChoice}
 
 \begin{document}
-\includepdf[pages=-, fitpaper=true]{theory.pdf}
+\includepdf[pages=-, fitpaper=true]{theory-ExpertChoice.pdf}
 \end{document}

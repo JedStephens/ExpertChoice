@@ -4,7 +4,7 @@
 \alias{dce_effiency}
 \title{Efficacy Measures for Discrete Choice Experiments}
 \usage{
-dce_effiency(augmented_full_factorial, choice_sets, m)
+dce_effiency(augmented_full_factorial, choice_sets)
 }
 \arguments{
 \item{augmented_full_factorial}{The level augmented full factorial. See tutorial step 2.}

@@ -7,7 +7,6 @@
 construct_question_frame(
   augmented_full_factorial,
   choice_sets,
-  m,
   randomise_choice_sets = TRUE
 )
 }
@@ -16,9 +15,9 @@ construct_question_frame(
 
 \item{choice_sets}{The choice sets list generated from one of the methods. (See Step 6 of the tutorial)}
 
-\item{m}{The number of alternatives in each choice set}
-
 \item{randomise_choice_sets}{A binary variable indicating if the order of the choice sets should be randomised. Some methods create choice sets which have a systematic order. Randomising the order of the choice sets does not change the alternatives within the choice sets. It simply rearranges the choice_set object in a random manner.}
+
+\item{m}{The number of alternatives in each choice set}
 }
 \value{
 a data.frame object

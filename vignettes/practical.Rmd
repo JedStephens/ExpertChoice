@@ -22,39 +22,13 @@ library(ExpertChoice)
 The purpose of this example is to present a practical worked example of how to design a conjoint and discrete choice experiment without blocking.
 
 # Step 0: Decide on what to test
-The following table gives the attributes and thier associated levels for reserach involving antique silver experts. 
-Although you do not need to create a table of this format in order to use the software it is beneficial to have an idea of what you wish to test and what would be suitable levels upon which to test it.
+
 The process of choosing a design often involes interating over steps 0 to 4. 
 Some designs are more difficult to create than others.
+The Theoretical Introduction to ExpertChoice presents two designs which are illustrated in this practical vingette.
 
 Here are some practical suggestions as to what makes a good design.
 1. In general avoid attributes with only two levels. The design such as the one below suffers because it is difficult to convert from the fractional fractorial of this design into an effient choice experiment design. The lack of efficiency is not from the methods of converting, but inherit in the fact that achieving the minimal overlap when there is only two levels is diffciult.
-
-TODO: Revise table.
-
-| z | attribute name   (z) | z_l | level name   (z_l) | Description |
-|:-:|:--------------------:|:---:|:----------------------------------------:|:------------------------------:|
-| 1 | Makers Renown | 0 | little known | Bottom 50% of makers |
-| 1 | Makers Renown | 1 | known to specialists | Middle 50% to 75% |
-| 1 | Makers Renown | 2 | recognised | 75% to 90% |
-| 1 | Makers Renown | 3 | famous | top 10% |
-| 2 | Technical Perfection | 0 | below average | Bottom 50% of  craftsmanship |
-| 2 | Technical Perfection | 1 | good | Middle 50% to 75% |
-| 2 | Technical Perfection | 2 | meritorious | 75% to 90% |
-| 2 | Technical Perfection | 3 | exceptional | top 10% |
-| 3 | Category Rarity | 0 | common | bottom 25% of  category rarity |
-| 3 | Category Rarity | 1 | uncommon | 25% to 50% |
-| 3 | Category Rarity | 2 | rare | 50% to 75% |
-| 3 | Category Rarity | 3 | very rare | top 25% |
-| 4 | Size (of object) | 0 | small | under 150g |
-| 4 | Size (of object) | 1 | medium | between 151g and 400g |
-| 4 | Size (of object) | 2 | large | between 401g and 1000g |
-| 4 | Size (of object) | 3 | extra large | larger than 1000g |
-| 5 | Age (of object) | 0 | 21st or 20th Century | Years 1900 to present |
-| 5 | Age (of object) | 1 | 19th Century | Years 1800 to 1899 |
-| 5 | Age (of object) | 2 | 18th Century | Years 1700 to 1799 |
-| 5 | Age (of object) | 3 | Before 18th Century | Before 1700 |
-
 
 # Step 1: Construct the full factorial
 First load the the `ExpertDesign` package into your R environemnent.
@@ -134,7 +108,7 @@ aff55[sample(nrow(aff55), 10), ]
 
 # Step 3: Creating a fractional factorial design.
 ```{r load-packages, message=FALSE}
-library(AlgDesign)
+#library(AlgDesign)
 library(DoE.base)
 # library(DoE.MIParray)
 ```
@@ -363,7 +337,7 @@ travel_example2 <- dce_effiency(aff_travel2131, travel_choice_set2)
 travel_questions <- construct_question_frame(aff_travel2131, travel_choice_set2, randomise_choice_sets = FALSE)
 levels(travel_questions$airfaire) <- c("$350", "$650")
 levels(travel_questions$travel_time) <- c("4 hours", "5 hours", "6 hours")
-View(travel_questions)
+#View(travel_questions)
 ```
 
 ```{r}
@@ -382,23 +356,43 @@ aff_menu <- augment_levels(ff_menu)
 nlevels <- unlist(purrr::map(ff_menu, function(x){length(levels(x))}))
 #oa_feasible(36, nlevels, strength = 3)
 
-#fractional_factorial_2241_25 <- oa.design(nlevels = nlevels, columns = "min34")
-fractional_factorial_3261_36 <- gurobi_MIParray(54, nlevels, resolution = 3)
+fractional_factorial_3261_18 <- oa.design(nlevels = nlevels, columns = "min34")
+# The fractional_factorial design is generated using the DoE.MIParray package.
+# The following is the command to run this generation.
+# The result is saved in the package.
+#fractional_factorial_3261_36 <- gurobi_MIParray(36, nlevels, resolution = 3)
+fractional_factorial_3261_36 <- ExpertChoice::fractional_factorial_3261_36
+
 # Step 4
 # Confirming that this is an efficient design.
 colnames(fractional_factorial_3261_36) <- colnames(ff_menu)
-fractional_menu3261 <- search_design(ff_menu, fractional_factorial_3261_36)
+fractional_menu_3261_36 <- search_design(ff_menu, fractional_factorial_3261_36)
 
 # Step 5.
+# This table is reported as Table 
 # Confirm that this design supports all interactions.
-full_factorial_efficiacy <- fractional_factorial_efficiency(~ (.)^2, fractional_menu3261)
-```
+row1_main_effects <- fractional_factorial_efficiency(~ starter + main + dessert, fractional_menu_3261_36)
+row2 <- fractional_factorial_efficiency(~ starter * main + dessert, fractional_menu_3261_36)
+row3 <- fractional_factorial_efficiency(~ starter + main * dessert, fractional_menu_3261_36)
+row4 <- fractional_factorial_efficiency(~ starter *dessert + main , fractional_menu_3261_36)
+# row5 cannot be computed because the fractional factorial does not support this.
+#row5 <- fractional_factorial_efficiency(~ starter * main * dessert, fractional_menu_3261_36)
+
+# Two different card options
+# Option 1
+dce_modulo_menu <- modulo_method(
+  fractional_menu_3261_36,
+  list(c(1, 1, 1), c(1,3,1))
+)
+
+# Option 2.
+dce_modulo_menu <- modulo_method(
+  fractional_menu_3261_36,
+  list(c(1, 1, 1), c(1,3,1), c(0,5,0))
+)
 
 
-# Design: DF: 17, 32 OA (Resolution II), 64 OA (Resolution III)
-oa_feasible(25, nlevels, strength = 2)
+dce_efficency_menu_example <- dce_effiency(aff_menu, dce_modulo_menu)
+
 ```
 
-Using the `DoE.base` package it is possible to construct a 25 .
-```{r}
-```
