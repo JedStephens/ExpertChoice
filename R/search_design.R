@@ -33,7 +33,7 @@ search_design <- function(full_factorial, fractional_factorial_design) {
   out <- full_factorial[row_index, ]
 
   # Add X_main
-  attr(out, "X_main") <- model.matrix(as.formula(
+  attr(out, "X_main") <- stats::model.matrix(stats::as.formula(
     paste("", paste(attributes(out)$names, collapse = " + "), sep = " ~ ")
   ), out)
 

@@ -3,8 +3,6 @@ Expert Choice
 Jed Stephens
 31 March 2020
 
-<!-- README.md is generated from README.Rmd. Please edit README.Rmd to make changes. -->
-
 # Welcome\!
 
 `ExpertChoice` has two vignettes to help you get started. The
@@ -19,16 +17,16 @@ methodological desire to implement a discrete choice experiment in my
 research. There exists a lack of comprehensive open source software to
 assist in the design of discrete choice experiments. Currently there are
 three R packages on CRAN that have some overlap with `ExpertChoice`:
-[choiceDes](https://cran.r-project.org/web/packages/choiceDes/index.html),
-[idefix](https://cran.r-project.org/web/packages/idefix/index.html) and
-[support.CEs](https://cran.r-project.org/web/packages/support.CEs/index.html).
-Two of these packages are no longer under active development and some of
-the functions have not been maintained and consequently no longer work.
-Two packages also lack documentation making it difficult for all but
-experts in this field to use. `ExpertChoice` provides a unified
-framework suitable for a first time learner to understand how to design
-an experiment and convert this experiment into a discrete choice. Its
-scope is also wider and more current than the above alternate packages.
+[choiceDes](https://CRAN.R-project.org/package=choiceDes),
+[idefix](https://CRAN.R-project.org/package=idefix) and
+[support.CEs](https://CRAN.R-project.org/package=support.CEs). Two of
+these packages are no longer under active development and some of the
+functions have not been maintained and consequently no longer work. Two
+packages also lack documentation making it difficult for all but experts
+in this field to use. `ExpertChoice` provides a unified framework
+suitable for a first time learner to understand how to design an
+experiment and convert this experiment into a discrete choice. Its scope
+is also wider and more current than the above alternate packages.
 
 Theoretical introduction to `ExpertChoice` is the first vignette: its
 objective is to explain the theory of experimental design and discrete

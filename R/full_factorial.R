@@ -42,8 +42,8 @@ full_factorial <- function(attributes_list){
     x_factor <- as.factor(x)
     nlevels_fct  <- nlevels(x_factor)
     # orthogonal coding for x-level factors, see Kuhfeld 2010 (pg. 62, 73)
-    EC <-cbind(c(rep(1, nlevels_fct)), contr.sum(x_factor))
-    contrasts(x_factor) <- (far::orthonormalization(EC)*nlevels_fct^(1/2))[,(2:nlevels_fct)]
+    EC <-cbind(c(rep(1, nlevels_fct)), stats::contr.sum(x_factor))
+    stats::contrasts(x_factor) <- (far::orthonormalization(EC)*nlevels_fct^(1/2))[,(2:nlevels_fct)]
     return(x_factor)
   }
 
@@ -52,7 +52,7 @@ full_factorial <- function(attributes_list){
   # Add on additional matrixes.
 
   # Add X_full
-  attr(full_factorial, "X_full") <- model.matrix(as.formula(
+  attr(full_factorial, "X_full") <- stats::model.matrix(stats::as.formula(
     paste("", paste(attributes(full_factorial)$names, collapse=" + "), sep=" ~ ")), full_factorial)
 
   # Add attributes_list
