@@ -26,7 +26,7 @@ a list with the following objects:
 Fractional Factorial Design Efficiency
 }
 \examples{
-See tutorial for worked examples.
+# See step 3 of the Practical Introduction to ExpertChoice vignette.
 }
 \references{
 Kuhfeld, W. F. Marketing Research Methods in SAS Experimental Design, Choice, Conjoint, and Graphical Techniques 2010.

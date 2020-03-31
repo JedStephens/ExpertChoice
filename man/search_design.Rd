@@ -12,12 +12,12 @@ search_design(full_factorial, fractional_factorial_design)
 \item{fractional_factorial_design}{a means of creating a fractional design using either orthogonal arrays or Federov. See the tutorial for examples.}
 }
 \value{
-a `data.frame` with only the rows of your chosen fractional fractorial design.
+a `data.frame` with only the rows of your chosen fractional factorial design.
 }
 \description{
 Returns a consistent fractional factorial design from the input fractional factorial design. The key advantage of this function is that it ensures factors are coded and enchances the attributes of the output.
 }
 \examples{
-# The use of this function depends on what the input to the argument fractional_factorial_design will be.
-# See Step 4 of the tutorial (on the GitHub repo) for more detials
+# The use of this function depends on what the input to the argument fractional_factorial_design
+# will be. See Step 4 of Practical Introduction to ExpertChoice vignette.
 }

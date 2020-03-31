@@ -2,7 +2,7 @@
 % Please edit documentation in R/construct_question_frame.R
 \name{construct_question_frame}
 \alias{construct_question_frame}
-\title{Convert from choice_sets to a question dataugmented_full_factorialrame}
+\title{Convert from choice_sets to a question data}
 \usage{
 construct_question_frame(
   augmented_full_factorial,
@@ -16,15 +16,13 @@ construct_question_frame(
 \item{choice_sets}{The choice sets list generated from one of the methods. (See Step 6 of the tutorial)}
 
 \item{randomise_choice_sets}{A binary variable indicating if the order of the choice sets should be randomised. Some methods create choice sets which have a systematic order. Randomising the order of the choice sets does not change the alternatives within the choice sets. It simply rearranges the choice_set object in a random manner.}
-
-\item{m}{The number of alternatives in each choice set}
 }
 \value{
 a data.frame object
 }
 \description{
-Convert from choice_sets to a question dataugmented_full_factorialrame
+Convert from choice_sets to a question data
 }
 \examples{
-See Step 8 of tutorial
+#See Step 9 of Practical Introduction to ExpertChoice vignette.
 }

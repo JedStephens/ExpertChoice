@@ -1,13 +1,13 @@
-#' Modulo Method - Described by Street
+#' Modulo Method - Described by Street et al.
 #'
-#' @param fractional_fatorial The usual
+#' @param fractional_fatorial The usual.
 #' @param generators a list of generators
 #'
 #' @return a choiceset list.
 #' @export
 #'
 #' @examples
-#' See step 6 of tutorial.
+#' # See step 6 of the Practical Introduction to ExpertChoice vignette.
 modulo_method <- function(fractional_fatorial, generators){
  # This is an implementation of the method described by Street et. al.
   attributes_list <- attributes(fractional_fatorial)$attributes_list

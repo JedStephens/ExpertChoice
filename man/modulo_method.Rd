@@ -2,12 +2,12 @@
 % Please edit documentation in R/modulo_method.R
 \name{modulo_method}
 \alias{modulo_method}
-\title{Modulo Method - Described by Street}
+\title{Modulo Method - Described by Street et al.}
 \usage{
 modulo_method(fractional_fatorial, generators)
 }
 \arguments{
-\item{fractional_fatorial}{The usual}
+\item{fractional_fatorial}{The usual.}
 
 \item{generators}{a list of generators}
 }
@@ -15,8 +15,8 @@ modulo_method(fractional_fatorial, generators)
 a choiceset list.
 }
 \description{
-Modulo Method - Described by Street
+Modulo Method - Described by Street et al.
 }
 \examples{
-See step 6 of tutorial.
+# See step 6 of the Practical Introduction to ExpertChoice vignette.
 }

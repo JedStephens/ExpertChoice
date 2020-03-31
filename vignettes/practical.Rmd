@@ -19,26 +19,29 @@ library(ExpertChoice)
 ```
 
 
-The purpose of this example is to present a practical worked example of how to design a conjoint and discrete choice experiment without blocking.
+The purpose of this vignette is to present a practical worked example of how to design a discrete choice experiment without blocking.
+It follows two examples both explained at greater lengths in the complimentary vignette titled: "Theoretical introduction to `ExpertChoice`"
 
 # Step 0: Decide on what to test
 
-The process of choosing a design often involes interating over steps 0 to 4. 
+The process of choosing a design often involves iterating over steps 0 to 4.
 Some designs are more difficult to create than others.
-The Theoretical Introduction to ExpertChoice presents two designs which are illustrated in this practical vingette.
+The Theoretical Introduction to `ExpertChoice` presents two designs which are illustrated in this practical vignette.
 
 Here are some practical suggestions as to what makes a good design.
-1. In general avoid attributes with only two levels. The design such as the one below suffers because it is difficult to convert from the fractional fractorial of this design into an effient choice experiment design. The lack of efficiency is not from the methods of converting, but inherit in the fact that achieving the minimal overlap when there is only two levels is diffciult.
+1. In general avoid attributes with only two levels. The design such as the one below suffers because it is difficult to convert from the fractional factorial of this design into an efficient choice experiment design.
+The lack of efficiency is not from the methods of converting, but inherit in the fact that achieving the minimal overlap when there is only two levels is difficult.
 
 # Step 1: Construct the full factorial
-First load the the `ExpertDesign` package into your R environemnent.
+First load the `ExpertDesign` package into your R environment.
 ```{r}
 library(ExpertChoice)
 ```
 
-Create a list object which specifies the name of the variables as well as thier respective levels.  
-**NB: The levels should be integer sequential and start from 0**. 
-The level at 0 is always the reference point.
+Create a list object which specifies the name of the variables as well as their respective levels.  
+**NB: In ordinal data the levels should be integer sequential and start from 0**.
+**NB: In categorical data the levels should be integer sequential and start from 1**.
+In an ordinal data experiment the level at 0 is always the reference point.
 As the proposed design above is a $5^5$ I have chosen to denote the object as `attr55`:
 ```{r}
 attri55 <- list(
@@ -50,7 +53,7 @@ attri55 <- list(
 )
 ```
 
-Calling the list object something like this is advantagous because you could have multiple competing designs still at this stage. 
+Calling the list object something like this is advantageous because you could have multiple competing designs still at this stage.
 The following design is $4^4 2^1$ and then denoted here as `attri4521`:
 ```{r}
 attri4521 <- list(
@@ -63,21 +66,21 @@ attri4521 <- list(
 )
 ```
 
-Create the full factorial object. 
+Create the full factorial object.
 Using the design specification as a suffix remains a handy way of keeping track of the design.
 
 ```{r}
 ff55 <- full_factorial(attri55)
 ```
 
-The full factorial will contain many rows. 
+The full factorial will contain many rows.
 The first five rows and the last five are given below:
 ```{r}
 rbind(head(ff55, 5), tail(ff55, 5))
 ```
 
-Every variable in the full factorial has the standaridised orthogonal contrast applied.
-These constrasts are very useful when eveluating the efficacy of a design.
+Every variable in the full factorial has the standardised orthogonal contrast applied.
+These contrasts are very useful when evaluating the efficacy of a design.
 This is simply illustrative of what the contrasts look like for one of the variables:
 ```{r}
 contrasts(ff55$maker)
@@ -85,8 +88,8 @@ contrasts(ff55$maker)
 
 # Step 2: Augment the full factorial
 
-Once the full facotrial is constructed it is possible to augment it with additional information.
-Many of these augmentations happen as attributes. 
+Once the full factorial is constructed it is possible to augment it with additional information.
+Many of these augmentations happen as attributes.
 This includes adding the B-matrix for main effects, an important matrix in DCE efficiency, as described by Street et al...
 The prefix `aff` is used to refer to the augmented (full) factorial.
 (You could of course name the object whatever you prefer.)
@@ -96,10 +99,10 @@ aff55 <- augment_levels(ff55)
 ```
 
 A console log will appear stating that the processes of applying the B-matrix has started.
-If you do not get this message then the B-matrix cannot be added. 
+If you do not get this message then the B-matrix cannot be added and a warning will be given.
 (Please open a GitHub issue if this is the case. I am not aware of instances where this should happen.)
 The B-matrix plays an important role in the choice efficiency of design.
-Below are ten random rows drawn from the agumented full factorial. 
+Below are ten random rows drawn from the augmented full factorial.
 Notice the additional of the `levels` column.
 
 ```{r}
@@ -113,20 +116,19 @@ library(DoE.base)
 # library(DoE.MIParray)
 ```
 
-There are many ways to create a fractional factorial design. 
-See Section ... of the associated note Designing conjoint scaling and discrete choice experiments for small sample expert surveys by Jed Stephens for a full discussion.
-Practically speaking though two methods are designed to be flawlessly integreated into this package.
-These are the construction of a fractional factorial design using an orthogonal array with either the `DoE.MIParray` or `DoE.base` packages or using D-optimal fractional factorial designs from the `AlgDesign` package.
+There are many ways to create a fractional factorial design.
+Practically speaking though two methods are designed to be flawlessly integrated into this package.
+These are the construction of a fractional factorial design using an orthogonal array with either the `DoE.MIParray` or `DoE.base` packages or using $D$-optimal fractional factorial designs from the `AlgDesign` package.
+(The `AlgDesign` method could be better integrated. If you want to use this please open a GitHub issue. Will be sorted quickly.)
 
-## Ortogonal Arrays (`DoE.MIParray` or `DoE.base`)
+## Orthogonal Arrays (`DoE.MIParray` or `DoE.base`)
 
 ### Determine feasiability
 
 The function `oa_feasible()` from the `DoE.base` package (`DoE.base::oa_feasible()`) provides many methods for determining if a particular design can be construed with $N_D$ rows.
-For the silver expert it was found that the following design was feasiable.
-It is possible to specifiy higher resolution designs.
-These are always advantageous. 
-See Section ... of the associated note Designing conjoint scaling and discrete choice experiments for small sample expert surveys by Jed Stephens for a full discussion.
+For the silver research (by Jed Stephens) it was found that the following design was feasible.
+It is possible to specify higher resolution designs.
+There are reasons why higher resolution designs could be advantageous.
 
 ```{r}
 # Design: DF: 17, 32 OA (Resolution II), 64 OA (Resolution III)
@@ -140,36 +142,36 @@ fractional_factorial_55_25 <- oa.design(nlevels = nlevels, columns = "min34")
 ```
 
 
-When consturcting a design using the `DoE.MIParray`... 
+When constructing a design using the `DoE.MIParray`...
 The function `mosek_MIParray()` was used to construct the example 64 run orthogonal array included with this package.
 
 ```{r}
 # Not run because it requires time as well as some setting up if this is your first time.
-# See DoE.MIParray for more detials.
+# See DoE.MIParray for more details.
 #fractional_factorial_55_25 <- gurobi_MIParray(25, nlevels)
 ```
 
 
 Note how the functions in DoE use a slightly different notation to index the factors.
-The base is given level 1 in this package. 
-This is not really a concern because it will be seemlessly converted shortly.
+The base is given level 1 in this package.
+This is not really a concern because it will be seamlessly converted shortly.
 
 ```{r}
 head(fractional_factorial_55_25, 10)
 ```
 
 ## D-efficient
-Not yet discussed or though it should be achieveable with mininal effort. 
+Not yet discussed or though it should be achievable with minimal effort.
 If a reader wishes for this example to be completed before I have done so please open a GitHub issue and I shall happily oblige completing.
 
 
 # Step 4: Searching the full factorial for the chosen fractional factorial design
 The ability to use multiple different packages to construct the fractional factorial design is ensured by this step.
-There can exist small differences between the different methods which require some fiddiling.
+There can exist small differences between the different methods which require some fiddling.
 
 The results of the `mosek_MIParray` function are orthogonal arrays without colnames.
-Hence in this instance the colnames need to be added. 
-This design clearly needed to be made with the full factiorial in mind.
+Hence in this instance the colnames need to be added.
+This design clearly needed to be made with the full factorial in mind.
 Hence the colnames from the `ff4521` object are appropriate.
 **Note: the colnames from the aff4521 would include the levels column -- hence avoid these...**
 
@@ -178,8 +180,8 @@ colnames(fractional_factorial_55_25) <- colnames(ff55)
 fractional_f55_25 <- search_design(ff55, fractional_factorial_55_25)
 ```
 
-The result is a fracitonal fractional design.
-Importantly though the fractional factorial design retains and inherits information from the full factorial such as the standarised orthgonal coding.
+The result is a fractional factorial design.
+Importantly though the fractional factorial design retains and inherits information from the full factorial such as the standardised orthogonal coding.
 To mark that many such attributes are held a special attribute is assigned to the object.
 
 ```{r}
@@ -187,11 +189,9 @@ To mark that many such attributes are held a special attribute is assigned to th
 attributes(fractional_f55_25)$searched
 ```
 
-Once an object is search converted it is now easy to run diagonsitcs.
+Once an object is search converted it is now easy to run diagnostics.
 
 # Step 5: Determining the efficacy of (full or fractional) factorial designs
-
-The theoertical discussion of these diagonstics is presented extensively in the associated note Designing conjoint scaling and discrete choice experiments for small sample expert surveys by Jed Stephens. See Section...
 
 The generalised world length patterns gives a good overall summary of the design.
 ```{r}
@@ -201,8 +201,8 @@ DoE.base::GWLP(fractional_f55_25)
 From this we can tell that this fractional factorial design is resolution IV i.e. strength of 3.
 Hence the all main effects are estimable free of each other, but some are confounded with two-attribute interactions.
 
-The function `fractional_factorial_efficiency` provides a formula based method of investigating the proposed fractional factorial design in more detials.
-This function also includes in its list of results the GWLP so there is no need to specifiy it.
+The function `fractional_factorial_efficiency` provides a formula based method of investigating the proposed fractional factorial design in more details.
+This function also includes in its list of results the GWLP so there is no need to specify it.
 
 Two examples are given which follow the two examples in the associated note.
 
@@ -217,7 +217,7 @@ The resultant object has the following objects:
 names(main_effects)
 ```
 
-Check the package help file for the `fractional_factorial_efficiency()` function for a full description. 
+Check the package help file for the `fractional_factorial_efficiency()` function for a full description.
 Also see the associated note for a more technical description.
 
 ```{r}
@@ -225,20 +225,29 @@ Also see the associated note for a more technical description.
 #main_plus_interacts <- fractional_factorial_efficiency(~ maker * technical + category_rarity + size + age, fractional_f55_25)
 ```
 
-This design supports only a single set of two-attribute interactions i.e. maker interact technical, or size interact age or age interact provenance etc. 
+This design supports only a single set of two-attribute interactions i.e. maker interact technical, or size interact age or age interact provenance etc.
 However it does not support more than two sets of two-attribute interactions: i.e. in this instance the maker interact technical and age interact provenance.
 
-In instances where some of the stipulated effects cannot be estimated (such as above) then the D-efficiecy would be NaN and similarly the A-efficeny is zero.
+In instances where some of the stipulated effects cannot be estimated (such as above) then the D-efficiency would be NaN and similarly the A-efficiency is zero.
 
 # Step 6: Methods to convert from factorial designs to discrete choice experiments
 
-## Modulo Method
-See techincal document.
+In general there are a few methods for converting between fractional factorial to discrete choice experiments.
+The Theoretical introduction to `ExpertChoice` vignette gives more details.
+Although it is intended to implement the Modulo Method, $\text{L}^{\text{MA}}$, Rotation and mix-and-match, currently only the Modulo method is implemented.
+Which is sensible because as methods go it creates smaller and more efficient designs than these others.
+Notwithstanding this, if it is of interest to implement other methods these can be included in this package with limited difficulty.
+Please raise a GitHub issue.
 
-TODO: All the methods presented in step 6 should give a class of `choice_set`.
+## Modulo Method
+See the Theoretical introduction to `ExpertChoice` vignette for more details on how this method works.
+<!-- TODO: All the methods presented in step 6 should give a class of `choice_set`. The modulo method already has this.
+!-->
+
+The modulators are supplied as vectors contained within a list.
+The number of vectors provided determines the number of choice cards within a given choice set.
 
 ```{r}
-# dce_step <- stephens_pairing(fractional_f4521_64)
 dce_modulo <- modulo_method(
   fractional_f55_25,
   list(c(1, 1, 1, 1, 1), c(3, 3, 3, 3, 3))
@@ -247,16 +256,25 @@ dce_modulo <- modulo_method(
 
 # Step 7: Checking for Pareto Overshadowed Cards
 
+Sometimes a particular choice may be Pareto dominate over all other choices.
+In such an instance there is no need to ask this question as it can be automatically answered and later augmented to the respondent data.
+It is important to remember to augment Pareto dominate choice sets if any exist.
+
 ```{r}
 checking_overshadow <- check_overshadow(dce_modulo)
+# The matrix of indixes indicate that for row 1, 7, 13, 19 and 25 there are Pareto dominate solutions.
+checking_overshadow
 ```
 
 # Step 8: Efficacy of the Discrete Choice Design
 
-```{r}
-dce_modulo_efficacy <- dce_effiency(aff55, dce_modulo)
-```
+This calculates the D-efficiency of the design as per Street, D.J., Burgess, L. and Louviere, J.J., 2005. Quick and easy choice sets: constructing optimal and nearly optimal stated choice experiments. International Journal of Research in Marketing, 22(4), pp.459-470.
+The pages of direct interest are 462 - 463 and these should be read in conjunction with the Theoretical introduction to `ExpertChoice` vignette.
+All the cases are printed and you can compare the calculation to the original paper.
 
+```{r}
+dce_modulo_efficacy <- dce_efficiency(aff55, dce_modulo)
+```
 
 # Step 9: Construct a Discrete Choice Question Frame
 
@@ -268,23 +286,111 @@ question_table_f55 <- construct_question_frame(aff55, dce_modulo)
 ```
 
 It is now time to add some useful information back to the levels.
-Originally these were described in Step 0, but up until this point it has been nececasury to work with only integer values.
+Originally these were described in Step 0, but up until this point it has been necessary to work with only integer values.
 (Also just imagine if you had worked with these very long names up until this point...)
 
 ```{r}
-# levels(question_table_f4521$maker) <- c("little known", "known to specialists", "recognised", "famous")
-# levels(question_table_f4521$technical) <- c("below average", "good", "meritorious", "exceptional")
-# levels(question_table_f4521$category_rarity) <- c("common", "uncommon", "rare", "very rare")
-# levels(question_table_f4521$size) <- c("small: under 150g", "medium: between 151g and 400g", "large: between 401g and 1000g", "extra large: larger than 1000g")
-# levels(question_table_f4521$age) <- c("21st or 20th Century", "19th Century", "18th Century", "Before 18th Century")
-# levels(question_table_f4521$provenance) <- c("unavailable or available, but unimportant", "available & important")
+levels(question_table_f55$maker) <- c("common (bottom 50% of makers)", "known to specialists (50% to 65% of makers)", "recognised (65% to 80%)", "famous (80% to 90%)", "celebrated top 10%")
+levels(question_table_f55$technical) <- c("below average (below 50% of craftmanship)", "good (50% to 65%)", "meritorious (65% to 80%)", "distinguished (80% to 90%)", "exquisite (top 10%)")
+levels(question_table_f55$category_rarity) <- c("common (bottom 20%)", "uncommon (20% to 40%)", "rare (40% to 60%)", "very rare (60% to 80%)", "exceptional (top 20%)")
+levels(question_table_f55$size) <- c("petite: under 125g", "small: between 126g and 275g", "medium: between 276g and 600g", "large: between 601g and 1200g", "extra large: exceeds 1200g")
+levels(question_table_f55$age) <- c("1951-present", "1951-present", "1951-present", "1951-present", "before 1800")
 # View(question_table_f4521)
 ```
 
-# Replicating the example in Street
+Viola! Here is the completed question dataframe.
 
-The purpose of this section is to replicate the ...
-The steps follow those of the tutorial.
+```{r}
+question_table_f55
+```
+
+
+# The Restaurant Example
+
+This DCE construction is described in the Theory Introduction to `ExpertChoice` vignette.
+It is intended to show more succinctly (than the silver example above) how to design such an experiment.
+
+```{r}
+#Step 0
+# Described in Theory
+attri3261 <- list(
+  starter = c("1", "2", "3"),
+  main = c("1", "2", "3", "4", "5", "6"),
+  dessert = c("1", "2", "3")
+)
+# Step 1
+ff_examp <- full_factorial(attri3261)
+# Step 2
+aff_examp <- augment_levels(ff_examp)
+#write.csv(ff_examp, "example.csv")
+# Step 3
+nlevels <- unlist(purrr::map(ff_examp, function(x){length(levels(x))}))
+#oa_feasible(36, nlevels, strength = 3)
+
+fractional_factorial_3261_18 <- oa.design(nlevels = nlevels, columns = "min34")
+# The fractional_factorial design is generated using the DoE.MIParray package.
+# The following is the command to run this generation.
+# The result is saved in the package.
+
+
+# Step 4
+# Confirming that this is an efficient design.
+colnames(fractional_factorial_3261_18) <- colnames(ff_examp)
+fractional_factorial_3261_18 <- search_design(ff_examp, fractional_factorial_3261_18)
+
+# Step 5.
+# This table is reported as Table
+# Confirm that this design supports all interactions.
+row1_main_effects <- fractional_factorial_efficiency(~ starter + main + dessert, fractional_factorial_3261_18)
+
+# Step 6.
+# Two different card options
+# Option 1
+dce_modulo_examp1 <- modulo_method(
+  fractional_factorial_3261_18,
+  list(c(1, 0, 1), c(0,1,0))
+)
+
+# Option 2.
+dce_modulo_examp2 <- modulo_method(
+  fractional_factorial_3261_18,
+  list(c(1, 0, 1), c(1,3,1), c(0,5,0))
+)
+
+# Step 7
+# This experiment uses categorical data (not ordinal) hence there can be no pareto dominate solution.
+# Each category is merely a choice.
+
+
+# Step 8.
+# Compare the efficiencies.
+dce_efficency_menu_example1 <- dce_efficiency(aff_examp, dce_modulo_examp1)
+dce_efficency_menu_example2 <- dce_efficiency(aff_examp, dce_modulo_examp2)
+# Option 2 is much more efficient so let's use that version!
+
+# Step 9
+# Construct the question table
+menu_question_table <- construct_question_frame(aff_examp, dce_modulo_examp2)
+
+# Finally augment the question table. See Table 1 in the Theoretical Vignette.
+levels(menu_question_table$starter) <- c("Tomato Soup", "Duck Rillettes", "Seafood Chowder")
+levels(menu_question_table$main) <- c("Roast Pheasant", "Pan Fried Hake", "Pork Belly", "Mushroom Risotto", "Sirloin Steak", "Vegetable Bake")
+levels(menu_question_table$dessert) <- c("Sticky Toffee Pudding", "Chocolate & Hazelnut Brownie", "Cheesecake")
+#View(menu_question_table)
+```
+
+Finally here is the resulting question table.
+
+```{r}
+menu_question_table
+```
+
+
+# Replicating the example in Street *et al.*, 2005
+
+The purpose of this section is to replicate the running example in Street, D.J., Burgess, L. and Louviere, J.J., 2005. Quick and easy choice sets: constructing optimal and nearly optimal stated choice experiments. International Journal of Research in Marketing, 22(4), pp.459-470.
+
+The steps commented in the code follow those of the tutorial.
 
 ```{r}
 # Step 0
@@ -298,7 +404,7 @@ travel2131 <- full_factorial(atttravel)
 aff_travel2131 <- augment_levels(travel2131)
 # Step 3.
 # The full factorial is already so small that selecting a fraction of it would be silly.
-# Therefore re-use the full factorial as the fractional fractorial.
+# Therefore re-use the full factorial as the fractional factorial.
 
 # Step 4.
 # Confirming that this is an efficient design.
@@ -313,7 +419,7 @@ full_factorial_efficiacy <- fractional_factorial_efficiency(~ (airfaire + travel
 travel_choice_set1 <- list(c("00", "11", "02"), c("10", "02", "12"))
 class(travel_choice_set1) <- c(class(travel_choice_set1), "choice_set")
 
-travel_example <- dce_effiency(aff_travel2131, travel_choice_set1)
+travel_example <- dce_efficiency(aff_travel2131, travel_choice_set1)
 # Note, if you want to rearrange the columns of the lamda matrix so that they are the same as Street use the following:
 # lamda_street_cols  <- matrix(c(travel_example$Lamda$mat[,1],
 #                                travel_example$Lamda$mat[,3],
@@ -327,11 +433,11 @@ travel_example <- dce_effiency(aff_travel2131, travel_choice_set1)
 #                                lamda_street_cols[2,],
 #                                lamda_street_cols[4,],
 #                                lamda_street_cols[6,]), ncol = 6)
-# Street gives a second arrangment:
+# Street gives a second arrangement:
 travel_choice_set2 <- list(c("00", "11", "02"), c("10", "01", "12"))
 class(travel_choice_set2) <- c(class(travel_choice_set2), "choice_set")
 # This version is 100% efficient.
-travel_example2 <- dce_effiency(aff_travel2131, travel_choice_set2)
+travel_example2 <- dce_efficiency(aff_travel2131, travel_choice_set2)
 
 # Step 8
 travel_questions <- construct_question_frame(aff_travel2131, travel_choice_set2, randomise_choice_sets = FALSE)
@@ -340,59 +446,6 @@ levels(travel_questions$travel_time) <- c("4 hours", "5 hours", "6 hours")
 #View(travel_questions)
 ```
 
-```{r}
-#Step 0
-# Described in Theory
-attri3261 <- list(
-    starter = c("1", "2", "3"),
-    main = c("1", "2", "3", "4", "5", "6"),
-    dessert = c("1", "2", "3")
-)
-# Step 1
-ff_menu <- full_factorial(attri3261)
-# Step 2
-aff_menu <- augment_levels(ff_menu)
-# Step 3
-nlevels <- unlist(purrr::map(ff_menu, function(x){length(levels(x))}))
-#oa_feasible(36, nlevels, strength = 3)
+# References
 
-fractional_factorial_3261_18 <- oa.design(nlevels = nlevels, columns = "min34")
-# The fractional_factorial design is generated using the DoE.MIParray package.
-# The following is the command to run this generation.
-# The result is saved in the package.
-#fractional_factorial_3261_36 <- gurobi_MIParray(36, nlevels, resolution = 3)
-fractional_factorial_3261_36 <- ExpertChoice::fractional_factorial_3261_36
-
-# Step 4
-# Confirming that this is an efficient design.
-colnames(fractional_factorial_3261_36) <- colnames(ff_menu)
-fractional_menu_3261_36 <- search_design(ff_menu, fractional_factorial_3261_36)
-
-# Step 5.
-# This table is reported as Table 
-# Confirm that this design supports all interactions.
-row1_main_effects <- fractional_factorial_efficiency(~ starter + main + dessert, fractional_menu_3261_36)
-row2 <- fractional_factorial_efficiency(~ starter * main + dessert, fractional_menu_3261_36)
-row3 <- fractional_factorial_efficiency(~ starter + main * dessert, fractional_menu_3261_36)
-row4 <- fractional_factorial_efficiency(~ starter *dessert + main , fractional_menu_3261_36)
-# row5 cannot be computed because the fractional factorial does not support this.
-#row5 <- fractional_factorial_efficiency(~ starter * main * dessert, fractional_menu_3261_36)
-
-# Two different card options
-# Option 1
-dce_modulo_menu <- modulo_method(
-  fractional_menu_3261_36,
-  list(c(1, 1, 1), c(1,3,1))
-)
-
-# Option 2.
-dce_modulo_menu <- modulo_method(
-  fractional_menu_3261_36,
-  list(c(1, 1, 1), c(1,3,1), c(0,5,0))
-)
-
-
-dce_efficency_menu_example <- dce_effiency(aff_menu, dce_modulo_menu)
-
-```
-
+Street, D.J., Burgess, L. and Louviere, J.J., 2005. Quick and easy choice sets: constructing optimal and nearly optimal stated choice experiments. International Journal of Research in Marketing, 22(4), pp.459-470.

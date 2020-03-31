@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples
-#' See tutorial for worked examples.
+#' # See step 3 of the Practical Introduction to ExpertChoice vignette.
 fractional_factorial_efficiency <- function(formula, searched_fractional_factorial){
   if(attributes(searched_fractional_factorial)$searched != TRUE){
     stop(simpleError("The input must be the result of a search from the full factorial"))
@@ -25,7 +25,7 @@ fractional_factorial_efficiency <- function(formula, searched_fractional_factori
   # Calculations (most follow Kuhfeld 2010, pg. 62, 63, 73, 74)
   # Assumption of standardise orthogonal constrast coding is ensured by this being a searched_fractional_factorial
   Nd  <- nrow(searched_fractional_factorial)
-  X   <- model.matrix(formula, searched_fractional_factorial)
+  X   <- stats::model.matrix(formula, searched_fractional_factorial)
   tXX <- crossprod(X, X) # t(X) %*% X. (Thats the equivalent)
   p   <- nrow(tXX)
 

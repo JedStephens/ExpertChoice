@@ -1,11 +1,11 @@
-#' Check Overshadow
+#' Check Overshadow - Pareto Dominate Solutions
 #'
 #' @param choice_sets An object of the choiceset class made by one of the DCE methods.
 #'
-#' @return A matrix of logicals indicating which if any card for a given row is Pareto optimal.
+#' @return A matrix of logicals indicating which if any card for a given row is Pareto dominate.
 #' @export
 #'
-#' @examples See step 7 of the practical vingette
+#' @examples #See Step 7 of the Practical Introduction to ExpertChoice Vignette.
 check_overshadow <- function(choice_sets) {
   if(!("choice_sets" %in% class(choice_sets))){
     # Should the input object not have the choice_sets class then stop.

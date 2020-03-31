@@ -16,6 +16,7 @@ a `data.frame` with the full factorial design and factors coded using standardis
 Generates the full factorial design with all the factors coded using standardised orthogonal contrast coding.
 }
 \examples{
+# See step 1 of the Practical Introduction to ExpertChoice vignette.
 attrshort  = list(condition = c("1", "2", "3"),
 technical =c("1", "2", "3"),
 provenance = c("1", "2"))

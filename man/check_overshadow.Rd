@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_overshadow.R
 \name{check_overshadow}
 \alias{check_overshadow}
-\title{Check Overshadow}
+\title{Check Overshadow - Pareto Dominate Solutions}
 \usage{
 check_overshadow(choice_sets)
 }
@@ -10,11 +10,11 @@ check_overshadow(choice_sets)
 \item{choice_sets}{An object of the choiceset class made by one of the DCE methods.}
 }
 \value{
-A matrix of logicals indicating which if any card for a given row is Pareto optimal.
+A matrix of logicals indicating which if any card for a given row is Pareto dominate.
 }
 \description{
-Check Overshadow
+Check Overshadow - Pareto Dominate Solutions
 }
 \examples{
-See step 7 of the practical vingette
+#See Step 7 of the Practical Introduction to ExpertChoice Vignette.
 }
