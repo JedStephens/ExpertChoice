@@ -11,6 +11,29 @@
 #' @examples
 #' # The use of this function depends on what the input to the argument fractional_factorial_design
 #' # will be. See Step 4 of Practical Introduction to ExpertChoice vignette.
+#'
+#' # Step 1
+#' attrshort  = list(condition = c("0", "1", "2"),
+#' technical =c("0", "1", "2"),
+#' provenance = c("0", "1"))
+#'
+#' #Step 2
+#' # ff stands for "full fatorial"
+#'  ff  <-  full_factorial(attrshort)
+#'  af  <-  augment_levels(ff)
+#' # af stands for "augmented factorial"
+#'
+#' # Step 3
+#' # Choose a design type: Federov or Orthogonal. Here an Orthogonal one is used.
+#' nlevels <- unlist(purrr::map(ff, function(x){length(levels(x))}))
+#' fractional_factorial <- DoE.base::oa.design(nlevels = nlevels, columns = "min34")
+#'
+#' # Step 4! - The search_design function.
+#' # The functional draws out the rows from the original augmented full factorial design.
+#' colnames(fractional_factorial) <- colnames(ff)
+#' fractional <- search_design(ff, fractional_factorial)
+
+
 search_design <- function(full_factorial, fractional_factorial_design) {
   if (any(c("oa", "design") %in% class(fractional_factorial_design))) {
     # The objects of class oa and design use 1 to mark the base level. Subtracing 1 places all factors at base of zero.

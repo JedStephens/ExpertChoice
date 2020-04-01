@@ -8,13 +8,20 @@
 #' @export
 #'
 #' @examples
-#' # # See Practical Introduction to ExpertChoice Vignette. Step 2.
-#' # ff stands for "full fatorial"
-#' # ff  <-  full_factorial(attrshort)
-#' # af  <-  augment_levels(ff)
+#' # See Practical Introduction to ExpertChoice Vignette. Step 2.
+#'
+#' #Step 1
+#' attrshort  = list(condition = c("0", "1", "2"),
+#' technical =c("0", "1", "2"),
+#' provenance = c("0", "1"))
+#'
+#' #Step 2! - the augment_levels function
+#' #' # ff stands for "full fatorial"
+#'  ff  <-  full_factorial(attrshort)
+#'  af  <-  augment_levels(ff)
 #' # af stands for "augmented factorial"
-#'
-#'
+#' af
+#' # Compare ff and af. - do not confuse them. They serve different purposes.
 
 augment_levels <- function(full_factorial){
   if(attributes(full_factorial)$snd_orth_constrast != TRUE){
@@ -35,7 +42,7 @@ augment_levels <- function(full_factorial){
   almostI <- tcrossprod(B, B)
 
   if(DWin(diag(almostI))){
-    cat("Applying B mat\n")
+    message("Applying B mat")
     prefactor <- diag(almostI)[1]
 
     attr(full_factorial, "B_mat") <- B * 1/(sqrt(prefactor))

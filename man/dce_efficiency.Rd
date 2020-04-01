@@ -19,6 +19,40 @@ Efficiency Measures for Discrete Choice Experiments
 }
 \examples{
 # See Step 8 of the Practical Introduction to ExpertChoice vignette.
+# Step 1
+attrshort  = list(condition = c("0", "1", "2"),
+technical =c("0", "1", "2"),
+provenance = c("0", "1"))
+
+#Step 2
+# ff stands for "full fatorial"
+ ff  <-  full_factorial(attrshort)
+ af  <-  augment_levels(ff)
+# af stands for "augmented factorial"
+
+# Step 3
+# Choose a design type: Federov or Orthogonal. Here an Orthogonal one is used.
+nlevels <- unlist(purrr::map(ff, function(x){length(levels(x))}))
+fractional_factorial <- DoE.base::oa.design(nlevels = nlevels, columns = "min34")
+
+# Step 4 & 5
+# The functional draws out the rows from the original augmented full factorial design.
+colnames(fractional_factorial) <- colnames(ff)
+fractional <- search_design(ff, fractional_factorial)
+# Step 5 (skipped, but important, see vignette)
+
+# Step 6
+# Two modulators c(1,1,1) and c(0,1,1) are specified.
+dce_modulo <- modulo_method(
+fractional,
+list(c(1,1,1),c(0,1,1))
+)
+
+# Step 7 (skipped)
+
+# Step 8! -- Inspect the D-efficiency using the Street et. al method of the DCE design.
+# NOTE: the af is used at this stage not the ff.
+dce_efficiency(af, dce_modulo)
 }
 \references{
 Street, D.J., Burgess, L. and Louviere, J.J., 2005. Quick and easy choice sets: constructing optimal and nearly optimal stated choice experiments. International Journal of Research in Marketing, 22(4), pp.459-470.

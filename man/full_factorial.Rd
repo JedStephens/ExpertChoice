@@ -17,9 +17,9 @@ Generates the full factorial design with all the factors coded using standardise
 }
 \examples{
 # See step 1 of the Practical Introduction to ExpertChoice vignette.
-attrshort  = list(condition = c("1", "2", "3"),
-technical =c("1", "2", "3"),
-provenance = c("1", "2"))
+attrshort  = list(condition = c("0", "1", "2"),
+technical =c("0", "1", "2"),
+provenance = c("0", "1"))
 full_factorial(attrshort)
 }
 \references{

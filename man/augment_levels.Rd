@@ -16,13 +16,20 @@ a `data.frame` with an additional column identifying the level and the B-matrix 
 Augments the full factorial design with a column summarising the levels of that design. Importantly, it also adds the B-matrix as an attribute.
 }
 \examples{
-# # See Practical Introduction to ExpertChoice Vignette. Step 2.
-# ff stands for "full fatorial"
-# ff  <-  full_factorial(attrshort)
-# af  <-  augment_levels(ff)
+# See Practical Introduction to ExpertChoice Vignette. Step 2.
+
+#Step 1
+attrshort  = list(condition = c("0", "1", "2"),
+technical =c("0", "1", "2"),
+provenance = c("0", "1"))
+
+#Step 2! - the augment_levels function
+#' # ff stands for "full fatorial"
+ ff  <-  full_factorial(attrshort)
+ af  <-  augment_levels(ff)
 # af stands for "augmented factorial"
-
-
+af
+# Compare ff and af. - do not confuse them. They serve different purposes.
 }
 \references{
 Street, D. J.; Burgess, L. & Louviere, J. J. Quick and easy choice sets: Constructing optimal and nearly optimal stated choice experiments International Journal of Research in Marketing, 2005 , 22 , 459 - 470
