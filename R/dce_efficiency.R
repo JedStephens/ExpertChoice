@@ -54,7 +54,7 @@ dce_efficiency <- function(augmented_full_factorial, choice_sets) {
   # Then determine the desings D-optimality.
   dce_d_effiency <- .dce_d_effiency(C_mat, upper_bound_detC, p)
   # Give some user output.
-  cat("\n\nThe D-efficiency of this discrete choice experiment is", round(dce_d_effiency, 3), "%", "\n")
+  message("\n\nThe D-efficiency of this discrete choice experiment is", round(dce_d_effiency, 3), "%", "\n")
 
   # Return the useful output.
   return(list(dce_d_effiency = dce_d_effiency, upper_bound_detC = upper_bound_detC, C_matrix = C_mat, Lamda = Lamda))
@@ -110,27 +110,27 @@ dce_efficiency <- function(augmented_full_factorial, choice_sets) {
     # return
     if ((((l == 2) & (m %% 2 != 0)))) {
       # CASE 1
-      cat("  ", "Case 1\n")
+      message("  ", "Case 1\n")
       return((m^2 - 1) / 4)
     } else if (((l == 2) & (m %% 2 == 0))) {
       # CASE 2
-      cat("  ", "Case 2\n")
+      message("  ", "Case 2\n")
       return((m^2) / 4)
     } else if (((l > 2) & (l <= m))) {
       # CASE 3
-      cat("  ", "Case 3\n")
+      message("  ", "Case 3\n")
       # First determine y and then x.
       for (y in 0:(l - 1)) {
         x <- (m - y) / l # See page 463 of Street, Burgess, Louviere (Reference above in Function Descp).
         # If x is a whole number then we have a winner!
         if (.is.wholenumber(x)) {
-          cat("  ", "The implied x is", x, "and y is", y, "\n")
+          message("  ", "The implied x is", x, "and y is", y, "\n")
           return((m^2 - (l * x^2 + 2 * x * y + y)) / 2)
         }
       }
     } else if ((l >= m)) {
       # Case 4
-      cat("Case 4\n")
+      message("Case 4\n")
       return((m * (m - 1)) / 2)
     }
   }
@@ -138,10 +138,10 @@ dce_efficiency <- function(augmented_full_factorial, choice_sets) {
   detC_theroy <- 1
   for (q in 1:k) {
     l <- levels_vector[q]
-    cat("\nq is", q, "\n")
-    cat("  ","L is", l, "\n")
+    message("\nq is", q, "\n")
+    message("  ","L is", l, "\n")
     s <- determine_s(q, m, l)
-    cat("  ", "s is", s, "\n")
+    message("  ", "s is", s, "\n")
 
     notQ <- (1:k)[-q]
     bracket <- (2 * s) / (m^2 * (l - 1) * prod(levels_vector[notQ]))
@@ -153,7 +153,7 @@ dce_efficiency <- function(augmented_full_factorial, choice_sets) {
 
 
 .dce_d_effiency <- function(C, C_optimal, p) {
-  # cat(paste("p is", p))
+  # message(paste("p is", p))
   dced <- ((det(C)) / C_optimal)^(1 / p) * 100
   names(dced) <- "dce_d_effiency"
   return(dced)
