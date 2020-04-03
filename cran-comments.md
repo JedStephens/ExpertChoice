@@ -14,8 +14,8 @@
 Thank you for the insightful comments. I have addressed each of your comments.
 
 * The title of the package has been shortened.
-* The Description field of the DESCRIPTION file has been shorted and references to the theoretical background of the the methods in the package have been added.
-* Every function now includes an example. The practical vingette still serves as the main reference for how to use the package.
+* The Description field of the DESCRIPTION file has been shorted and references to the theoretical background of the methods in the package have been added.
+* Every function now includes an example. The practical vignette still serves as the main reference for how to use the package.
 * All cat() functions have been replaced with message()
 
 I hope that this is satisfactory.
