@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "STPJED001@myuct.ac.za",
            comment = c(ORCID = "0000-0002-0131-703X"))
-Description: An R package to support designing efficient discrete choice experiments (DCEs). Experimental designs can be formed on the basis of orthogonal arrays or search methods for optimal designs (Federov or mixed integer programs). Various methods for converting these experimental designs into a discrete choice experiment. Many efficiency measures! Draws from literature of Kuhfeld (2010) and Street et. al (2005) <doi:10.1016/j.ijresmar.2005.09.003>.
+Description: Supports designing efficient discrete choice experiments (DCEs). Experimental designs can be formed on the basis of orthogonal arrays or search methods for optimal designs (Federov or mixed integer programs). Various methods for converting these experimental designs into a discrete choice experiment. Many efficiency measures! Draws from literature of Kuhfeld (2010) and Street et. al (2005) <doi:10.1016/j.ijresmar.2005.09.003>.
 ByteCompile: true
 License: MIT + file LICENSE
 Encoding: UTF-8

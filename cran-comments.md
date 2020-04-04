@@ -19,3 +19,11 @@ Thank you for the insightful comments. I have addressed each of your comments.
 * All cat() functions have been replaced with message()
 
 I hope that this is satisfactory.
+
+## Response to Swetlana Herbrandt following second CRAN submission.
+
+Thank you for checking the package.
+
+* The Description field of the DESCRIPTION file has been updated to reflect your suggestion.
+
+I appreciate your consideration.
