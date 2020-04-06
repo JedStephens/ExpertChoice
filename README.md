@@ -3,6 +3,9 @@ Expert Choice
 Jed Stephens
 31 March 2020
 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/webp)](https://cran.r-project.org/package=ExpertChoice)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/webp)](https://cran.r-project.org/package=ExpertChoice)
+
 # Welcome\!
 
 `ExpertChoice` has two vignettes to help you get started. The
