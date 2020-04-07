@@ -1,7 +1,11 @@
 Expert Choice
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ExpertChoice)](https://cran.r-project.org/package=ExpertChoice)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/ExpertChoice)](https://cran.r-project.org/package=ExpertChoice)
 ================
 Jed Stephens
 31 March 2020
+
+
 
 # Welcome\!
 
