@@ -1,6 +1,6 @@
 Package: ExpertChoice
 Title: Design of Discrete Choice and Conjoint Analysis
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     person(given = "Jed",
            family = "Stephens",

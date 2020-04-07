@@ -1,7 +1,0 @@
-\documentclass{article}
-\usepackage{pdfpages}
-%\VignetteIndexEntry{Theoretical introduction to ExpertChoice}
-
-\begin{document}
-\includepdf[pages=-, fitpaper=true]{theory-ExpertChoice.pdf}
-\end{document}
