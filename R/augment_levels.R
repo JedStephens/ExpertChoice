@@ -48,7 +48,7 @@ augment_levels <- function(full_factorial){
     attr(full_factorial, "B_mat") <- B * 1/(sqrt(prefactor))
     #print(B %*% t(B))
   }else{
-    simpleWarning("The B %*% t(B) should equal I, but does not. Create GitHub issue!")
+    warning("The B %*% t(B) should equal I, but does not. Create GitHub issue!")
   }
   return(full_factorial)
 }
